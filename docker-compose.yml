@@ -1,14 +1,14 @@
-services:
-  db:
-    image: mysql:8.0
-    container_name: fw-mysql
-    environment:
-      MYSQL_DATABASE: todoapp
-      MYSQL_ROOT_PASSWORD: password
-    ports:
-      - "3306:3306"
-    volumes:
-      - fw-db-data:/var/lib/mysql
+services:                        # 起動するものの一覧
+  db:                           # このMySQLの呼び名
+    image: mysql:8.0             # 使うMySQLの種類と版
+    container_name: fw-mysql     # コンテナ（動く入れ物）の名前
+    environment:                 # MySQLに渡す設定値
+      MYSQL_DATABASE: todoapp    # 作るデータベースの名前
+      MYSQL_ROOT_PASSWORD: password # 管理者のパスワード
+    ports:                       # 外部から接続する番号の設定
+      - "3306:3306"              # PC側の番号:コンテナ側の番号
+    volumes:                     # データの保存先
+      - fw-db-data:/var/lib/mysql # 保存領域:MySQL内の保存場所
 
-volumes:
-  fw-db-data:
+volumes:                         # 保存領域の一覧
+  fw-db-data:                    # 保存領域の名前
