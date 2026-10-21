@@ -9,6 +9,25 @@ services:                        # 起動するものの一覧
       - "3306:3306"              # PC側の番号:コンテナ側の番号
     volumes:                     # データの保存先
       - fw-db-data:/var/lib/mysql # 保存領域:MySQL内の保存場所
+    healthcheck:
+      test: ["CMD-SHELL", "MYSQL_PWD=\"$$MYSQL_ROOT_PASSWORD\" mysql -h 127.0.0.1 -u root -D todoapp -e 'SELECT 1' >/dev/null 2>&1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  app:
+    build: .
+    container_name: fw-app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/todoapp
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    depends_on:
+      db:
+        condition: service_healthy
 
 volumes:                         # 保存領域の一覧
   fw-db-data:                    # 保存領域の名前
