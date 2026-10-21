@@ -24,9 +24,11 @@
             </select>
             <input type="hidden" name="order" th:value="${order}">
             <button class="btn" type="submit">絞り込む</button>
+        </form>
+        <nav class="sort-links" aria-label="期限の並び替え">
             <a class="link" th:href="@{/todos(keyword=${keyword},category=${category},order='asc')}">期限が近い順</a>
             <a class="link" th:href="@{/todos(keyword=${keyword},category=${category},order='desc')}">期限が遠い順</a>
-        </form>
+        </nav>
         <a class="btn" href="/todos/new">新規登録</a>
         <p th:if="${#lists.isEmpty(todos)}">まだ1件も登録されていません</p>
         <table class="todo-table" th:unless="${#lists.isEmpty(todos)}">

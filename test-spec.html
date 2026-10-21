@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>やること管理アプリ テスト仕様書</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 16px; color: #1e293b; font-family: sans-serif; font-size: 12px; }
+        h1 { margin: 0 0 8px; font-size: 20px; }
+        p { margin: 0 0 12px; }
+        .table-heading { display: flex; justify-content: flex-end; margin-bottom: 8px; }
+        button { border: 1px solid #334155; border-radius: 5px; padding: 6px 14px; background: #334155; color: #fff; cursor: pointer; }
+        table { width: 100%; table-layout: fixed; border-collapse: collapse; }
+        col.number { width: 5%; }
+        col.check { width: 20%; }
+        col.value { width: 15%; }
+        col.expected { width: 25%; }
+        col.result { width: 10%; }
+        col.note { width: 25%; }
+        th, td { border: 1px solid #94a3b8; padding: 5px 6px; text-align: left; vertical-align: top; overflow-wrap: anywhere; line-height: 1.35; }
+        th { background: #f1f5f9; }
+        td.number { text-align: center; }
+        .screen-result { display: flex; flex-wrap: nowrap; gap: 6px; }
+        .screen-result label { white-space: nowrap; }
+        .screen-result input { margin: 0 2px 0 0; vertical-align: middle; }
+        textarea { display: block; width: 100%; min-height: 36px; padding: 3px; border: 1px solid #94a3b8; font: inherit; line-height: 1.35; resize: vertical; overflow: hidden; }
+        .print-result, .print-note { display: none; }
+        @media print {
+            @page { size: A4 landscape; margin: 8mm; }
+            body { padding: 0; font-size: 8pt; }
+            h1 { font-size: 14pt; }
+            .table-heading, textarea, .screen-result { display: none; }
+            .print-result, .print-note { display: block; }
+            .print-note { white-space: pre-wrap; overflow-wrap: anywhere; }
+            th, td { padding: 3px 4px; }
+        }
+    </style>
+</head>
+<body>
+    <h1>やること管理アプリ テスト仕様書</h1>
+    <p>開始時の todos は5行。上から順に確かめ、結果を選び、NGの場合は備考に実際の表示を書いてください。「PDFで保存」を押した後、印刷画面で「PDFとして保存」を選びます。</p>
+    <div class="table-heading"><button type="button" id="print-button">PDFで保存</button></div>
+    <table>
+        <colgroup>
+            <col class="number"><col class="check"><col class="value"><col class="expected"><col class="result"><col class="note">
+        </colgroup>
+        <thead><tr><th scope="col">番号</th><th scope="col">確かめること</th><th scope="col">入れる値</th><th scope="col">期待する結果</th><th scope="col">結果</th><th scope="col">備考/NG</th></tr></thead>
+        <tbody>
+            <tr>
+                <td class="number">01</td>
+                <td>一覧画面と初期表示</td>
+                <td>/todos を開く（開始時は5行）</td>
+                <td>6列の一覧に5行が表示され、期限が近い順に並ぶ。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-01" value="OK"> OK</label><label><input type="radio" name="result-01" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="01 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">02</td>
+                <td>登録画面</td>
+                <td>「新規登録」を押す</td>
+                <td>5つの入力欄、「確認する」「一覧へ」、ジャンルの5択、優先度の高・中・低が表示される。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-02" value="OK"> OK</label><label><input type="radio" name="result-02" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="02 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">03</td>
+                <td>やること未入力の確認</td>
+                <td>やること＝空欄、ジャンル＝デザイン、優先度＝高で「確認する」</td>
+                <td>登録画面に留まり、やることの下に「やることを入力してください」と表示される。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-03" value="OK"> OK</label><label><input type="radio" name="result-03" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="03 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">04</td>
+                <td>半角空白だけの確認</td>
+                <td>やること＝半角スペースだけで「確認する」</td>
+                <td>登録画面に留まり、やることの下に「やることを入力してください」と表示される。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-04" value="OK"> OK</label><label><input type="radio" name="result-04" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="04 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">05</td>
+                <td>全角空白だけの確認</td>
+                <td>やること＝全角スペースだけで「確認する」</td>
+                <td>登録画面に留まり、やることの下に「やることを入力してください」と表示される。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-05" value="OK"> OK</label><label><input type="radio" name="result-05" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="05 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">06</td>
+                <td>やること256文字の確認</td>
+                <td>やること＝「あ」を256文字、ジャンル＝デザイン、優先度＝高</td>
+                <td>登録画面に留まり、やることの下に「やることは255文字以内で入力してください」と表示される。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-06" value="OK"> OK</label><label><input type="radio" name="result-06" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="06 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">07</td>
+                <td>メモ256文字の確認</td>
+                <td>やること＝試験用A_20261021、メモ＝「あ」を256文字、ジャンル＝デザイン、優先度＝高</td>
+                <td>登録画面に留まり、メモの下に「メモは255文字以内で入力してください」と表示される。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-07" value="OK"> OK</label><label><input type="radio" name="result-07" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="07 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">08</td>
+                <td>ジャンル未選択の確認</td>
+                <td>やること＝試験用A_20261021、メモ＝空欄、ジャンル＝未選択、優先度＝高</td>
+                <td>登録画面に留まり、ジャンルの下に「ジャンルを選んでください」と表示される。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-08" value="OK"> OK</label><label><input type="radio" name="result-08" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="08 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">09</td>
+                <td>優先度未選択の確認</td>
+                <td>やること＝試験用A_20261021、ジャンル＝デザイン、優先度＝未選択</td>
+                <td>登録画面に留まり、優先度の下に「優先度を選んでください」と表示される。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-09" value="OK"> OK</label><label><input type="radio" name="result-09" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="09 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">10</td>
+                <td>255文字以内の確認</td>
+                <td>やること・メモ＝それぞれ「あ」を255文字、ジャンル＝デザイン、優先度＝高、期限＝空欄で「確認する」</td>
+                <td>登録の確認画面に入力した文字が表示され、期限は「（入力なし）」と表示される。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-10" value="OK"> OK</label><label><input type="radio" name="result-10" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="10 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">11</td>
+                <td>登録の書き直し</td>
+                <td>「書き直す」を押す</td>
+                <td>登録画面に戻り、直前に入力したやること・メモ・ジャンル・優先度が欄に残る。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-11" value="OK"> OK</label><label><input type="radio" name="result-11" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="11 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">12</td>
+                <td>登録の確認画面</td>
+                <td>やること＝試験用A_20261021、メモ＝空欄、ジャンル＝デザイン、優先度＝高、期限＝2030-01-01で「確認する」</td>
+                <td>登録の確認画面に5項目が文字で表示され、メモは「（入力なし）」と表示される。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-12" value="OK"> OK</label><label><input type="radio" name="result-12" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="12 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">13</td>
+                <td>試験用Aの登録と登録後の文</td>
+                <td>「登録する」を押す</td>
+                <td>一覧に試験用A_20261021が加わって6行になり、上部に「登録しました」と表示される。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-13" value="OK"> OK</label><label><input type="radio" name="result-13" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="13 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">14</td>
+                <td>編集画面</td>
+                <td>試験用A_20261021の「編集」を押す</td>
+                <td>編集画面に登録済みの5項目と完了のチェック欄が表示され、現在の値が入っている。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-14" value="OK"> OK</label><label><input type="radio" name="result-14" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="14 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">15</td>
+                <td>編集時の必須入力確認</td>
+                <td>やることを空欄にして「確認する」</td>
+                <td>編集画面に留まり、やることの下に「やることを入力してください」と表示される。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-15" value="OK"> OK</label><label><input type="radio" name="result-15" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="15 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">16</td>
+                <td>編集の確認画面</td>
+                <td>やること＝試験用A編集_20261021、期限＝2030-02-01、完了＝チェックありで「確認する」</td>
+                <td>編集の確認画面に変更後の6項目が文字で表示され、完了は「完了」と表示される。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-16" value="OK"> OK</label><label><input type="radio" name="result-16" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="16 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">17</td>
+                <td>編集の書き直し</td>
+                <td>「書き直す」を押す</td>
+                <td>編集画面に戻り、変更後のやること・期限・完了のチェックが欄に残る。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-17" value="OK"> OK</label><label><input type="radio" name="result-17" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="17 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">18</td>
+                <td>編集の保存と保存後の文</td>
+                <td>もう一度「確認する」から「保存する」を押す</td>
+                <td>一覧に試験用A編集_20261021と期限2030-02-01と「完了」が表示され、上部に「保存しました」と表示される。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-18" value="OK"> OK</label><label><input type="radio" name="result-18" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="18 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">19</td>
+                <td>試験用Bの登録</td>
+                <td>「新規登録」から、やること＝試験用B_20261021、ジャンル＝プログラミング、優先度＝中、期限＝2030-12-31を確認して登録</td>
+                <td>一覧に試験用B_20261021が加わり、7行が表示される。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-19" value="OK"> OK</label><label><input type="radio" name="result-19" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="19 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">20</td>
+                <td>名前の一部で絞り込む</td>
+                <td>名前に「A編集_20261021」を入れて「絞り込む」</td>
+                <td>試験用A編集_20261021が表示され、試験用B_20261021は表示されない。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-20" value="OK"> OK</label><label><input type="radio" name="result-20" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="20 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">21</td>
+                <td>ジャンルで絞り込む</td>
+                <td>名前を空欄にし、ジャンル＝デザインで「絞り込む」</td>
+                <td>表示された行のジャンルはすべて「デザイン」で、試験用B_20261021は表示されない。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-21" value="OK"> OK</label><label><input type="radio" name="result-21" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="21 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">22</td>
+                <td>絞り込み結果が0件</td>
+                <td>名前＝A編集_20261021、ジャンル＝プログラミングで「絞り込む」</td>
+                <td>一覧に「まだ1件も登録されていません」と表示される。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-22" value="OK"> OK</label><label><input type="radio" name="result-22" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="22 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">23</td>
+                <td>両方空欄で絞り込む</td>
+                <td>名前を空欄、ジャンル＝すべてで「絞り込む」</td>
+                <td>絞り込み前の7行がすべて一覧に表示される。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-23" value="OK"> OK</label><label><input type="radio" name="result-23" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="23 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">24</td>
+                <td>期限が近い順</td>
+                <td>名前＝試験用で「絞り込む」後、「期限が近い順」を押す</td>
+                <td>試験用A編集_20261021が試験用B_20261021より上に表示される。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-24" value="OK"> OK</label><label><input type="radio" name="result-24" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="24 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">25</td>
+                <td>期限が遠い順</td>
+                <td>「期限が遠い順」を押す</td>
+                <td>試験用B_20261021が試験用A編集_20261021より上に表示される。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-25" value="OK"> OK</label><label><input type="radio" name="result-25" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="25 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">26</td>
+                <td>検索条件と並び順のアドレス</td>
+                <td>表示中のアドレスを開き直す</td>
+                <td>アドレスにkeyword=試験用とorder=descが残り、試験用Bが試験用A編集より上に表示される。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-26" value="OK"> OK</label><label><input type="radio" name="result-26" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="26 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">27</td>
+                <td>名前とジャンルの組み合わせ</td>
+                <td>名前＝試験用、ジャンル＝デザインで「絞り込む」後、「期限が遠い順」を押す</td>
+                <td>アドレスに名前・ジャンル・並び順が付き、一覧には試験用A編集_20261021だけが表示される。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-27" value="OK"> OK</label><label><input type="radio" name="result-27" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="27 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">28</td>
+                <td>削除確認画面</td>
+                <td>絞り込みを解除し、試験用B_20261021の「削除」を押す</td>
+                <td>削除確認画面に試験用Bのやること・ジャンル・期限が文字で表示され、「消す」「やめる」が表示される。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-28" value="OK"> OK</label><label><input type="radio" name="result-28" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="28 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">29</td>
+                <td>削除の取りやめ</td>
+                <td>「やめる」を押す</td>
+                <td>一覧に戻り、試験用B_20261021が残っている。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-29" value="OK"> OK</label><label><input type="radio" name="result-29" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="29 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">30</td>
+                <td>試験用Bの削除と削除後の文</td>
+                <td>試験用B_20261021の「削除」から「消す」を押す</td>
+                <td>一覧から試験用Bが消えて6行になり、上部に「削除しました」と表示される。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-30" value="OK"> OK</label><label><input type="radio" name="result-30" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="30 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">31</td>
+                <td>存在しない番号の編集</td>
+                <td>/todos/9223372036854775807/edit を開く</td>
+                <td>一覧に戻り、上部に「見つかりませんでした」と表示される。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-31" value="OK"> OK</label><label><input type="radio" name="result-31" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="31 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">32</td>
+                <td>存在しない番号の削除確認</td>
+                <td>/todos/9223372036854775807/delete を開く</td>
+                <td>一覧に戻り、上部に「見つかりませんでした」と表示される。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-32" value="OK"> OK</label><label><input type="radio" name="result-32" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="32 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">33</td>
+                <td>編集画面から一覧へ</td>
+                <td>試験用A編集_20261021の「編集」から「一覧へ」を押す</td>
+                <td>一覧に戻り、試験用A編集_20261021が表示される。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-33" value="OK"> OK</label><label><input type="radio" name="result-33" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="33 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+            <tr>
+                <td class="number">34</td>
+                <td>試験用の行を消して5行へ戻す</td>
+                <td>試験用A編集_20261021の「削除」から「消す」を押す</td>
+                <td>一覧から試験用A編集が消え、開始時と同じ5行が表示される。</td>
+                <td class="result-cell"><div class="screen-result"><label><input type="radio" name="result-34" value="OK"> OK</label><label><input type="radio" name="result-34" value="NG"> NG</label></div><span class="print-result" aria-hidden="true"></span></td>
+                <td><textarea aria-label="34 備考/NG" rows="2"></textarea><div class="print-note" aria-hidden="true"></div></td>
+            </tr>
+        </tbody>
+    </table>
+    <script>
+        function updatePrintView() {
+            document.querySelectorAll("tbody tr").forEach((row) => {
+                const textarea = row.querySelector("textarea");
+                textarea.style.height = "auto";
+                textarea.style.height = (textarea.scrollHeight + 2) + "px";
+                row.querySelector(".print-note").textContent = textarea.value;
+                const checked = row.querySelector('input[type="radio"]:checked');
+                row.querySelector(".print-result").textContent =
+                    checked?.value === "OK" ? "● OK　○ NG" :
+                    checked?.value === "NG" ? "○ OK　● NG" : "○ OK　○ NG";
+            });
+        }
+        document.querySelectorAll("textarea").forEach((textarea) => textarea.addEventListener("input", updatePrintView));
+        document.querySelectorAll('input[type="radio"]').forEach((radio) => radio.addEventListener("change", updatePrintView));
+        window.addEventListener("beforeprint", updatePrintView);
+        document.getElementById("print-button").addEventListener("click", () => {
+            updatePrintView();
+            window.print();
+        });
+        updatePrintView();
+    </script>
+</body>
+</html>
+

@@ -81,6 +81,14 @@ body {
     width: auto;
 }
 
+.sort-links {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 24px;
+    margin-bottom: 20px;
+    white-space: nowrap;
+}
+
 .error {
     margin: 4px 0 0;
     color: #B91C1C;
