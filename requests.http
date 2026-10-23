@@ -1,0 +1,38 @@
+GET http://localhost:8080/api/todos?category=就職活動
+
+### 1. 1件登録する
+POST http://localhost:8080/api/todos
+Content-Type: application/json
+
+{
+  "title": "業界研究",
+  "category": "マーケティング",
+  "priority": 2,
+  "dueDate": "2026-11-01"
+}
+
+### 2. 1件取得する
+GET http://localhost:8080/api/todos/99
+
+
+### 3. 1件更新する
+PUT http://localhost:8080/api/todos/1
+Content-Type: application/json
+
+{
+  "title": "競合サイトを5つ調べる",
+  "detail": null,
+  "category": "マーケティング",
+  "priority": 2,
+  "dueDate": "2026-11-01",
+  "completed": false
+}
+
+### 4. 1件削除する
+DELETE http://localhost:8080/api/todos/1
+
+### 5. 祝日を直接取ってくる
+GET https://holidays-jp.github.io/api/v1/date.json
+
+### 6. 自分のアプリの祝日API
+GET http://localhost:8080/api/holidays

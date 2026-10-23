@@ -5,6 +5,8 @@ services:                        # 起動するものの一覧
     environment:                 # MySQLに渡す設定値
       MYSQL_DATABASE: todoapp    # 作るデータベースの名前
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} # 管理者のパスワード
+      TZ: Asia/Tokyo
+    command: --default-time-zone=+09:00
     ports:                       # 外部から接続する番号の設定
       - "3306:3306"              # PC側の番号:コンテナ側の番号
     volumes:                     # データの保存先
