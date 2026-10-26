@@ -125,3 +125,67 @@ body {
     color: #334155;
     text-decoration: underline;
 }
+
+.calendar-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+    margin-bottom: 16px;
+}
+
+.calendar-nav-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.calendar-nav-group:last-child {
+    margin-left: auto;
+}
+
+.calendar-scroll {
+    overflow-x: auto;
+}
+
+.calendar-table {
+    width: 100%;
+    min-width: 490px;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.calendar-table th,
+.calendar-table td {
+    border: 1px solid #94a3b8;
+    padding: 8px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.calendar-table th {
+    background: #f1f5f9;
+    text-align: center;
+}
+
+.calendar-table td {
+    height: 88px;
+}
+
+.calendar-empty {
+    background: #f8fafc;
+}
+
+.calendar-todo-link {
+    display: block;
+    color: inherit;
+}
+
+.calendar-todo-compact {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.calendar-overdue {
+    color: #b91c1c;
+}

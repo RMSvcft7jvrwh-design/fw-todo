@@ -36,3 +36,12 @@ GET https://holidays-jp.github.io/api/v1/date.json
 
 ### 6. 自分のアプリの祝日API
 GET http://localhost:8080/api/holidays
+
+### 9-1 期限で絞り込む
+GET http://localhost:8080/api/todos?from=2026-04-01&to=2026-04-30
+
+### Todoを全件取得
+GET http://localhost:8080/api/todos
+
+### 9-1 2026年10月のTodoだけ取得
+GET http://localhost:8080/api/todos?from=2026-10-01&to=2026-10-31
