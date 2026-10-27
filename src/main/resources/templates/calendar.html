@@ -35,7 +35,9 @@
                 <tbody>
                     <tr th:each="week : ${weeks}">
                         <th:block th:each="date : ${week}">
-                            <td th:if="${date != null}" th:attr="data-date=${date}" th:text="${date.dayOfMonth}"></td>
+                            <td th:if="${date != null}" th:attr="data-date=${date}">
+                                <div class="calendar-cell-content" th:text="${date.dayOfMonth}"></div>
+                            </td>
                             <td th:unless="${date != null}" class="calendar-empty"></td>
                         </th:block>
                     </tr>
@@ -71,22 +73,27 @@
                 }
 
                 for (const cell of cells) {
+                    const content = cell.querySelector('.calendar-cell-content');
                     const dayTodos = todos.filter(todo => todo.dueDate === cell.dataset.date);
                     for (const todo of dayTodos.slice(0, 3)) {
                         const item = createTodoLink(todo);
                         if (dayTodos.length >= 3) {
                             item.classList.add('calendar-todo-compact');
                         }
-                        cell.appendChild(item);
+                        content.appendChild(item);
                     }
                     if (dayTodos.length > 3) {
                         const details = document.createElement('details');
+                        details.classList.add('calendar-more');
                         const summary = document.createElement('summary');
                         summary.textContent = `ほか ${dayTodos.length - 3}件`;
                         details.appendChild(summary);
+                        const panel = document.createElement('div');
+                        panel.classList.add('calendar-more-panel');
                         for (const todo of dayTodos.slice(3)) {
-                            details.appendChild(createTodoLink(todo));
+                            panel.appendChild(createTodoLink(todo));
                         }
+                        details.appendChild(panel);
                         cell.appendChild(details);
                     }
                 }

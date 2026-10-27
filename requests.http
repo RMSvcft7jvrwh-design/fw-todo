@@ -37,11 +37,57 @@ GET https://holidays-jp.github.io/api/v1/date.json
 ### 6. 自分のアプリの祝日API
 GET http://localhost:8080/api/holidays
 
-### 9-1 期限で絞り込む
+### 7. 期限で絞り込む
 GET http://localhost:8080/api/todos?from=2026-04-01&to=2026-04-30
 
-### Todoを全件取得
+### 8. Todoを全件取得
 GET http://localhost:8080/api/todos
 
-### 9-1 2026年10月のTodoだけ取得
+### 9. 2026年10月のTodoだけ取得
 GET http://localhost:8080/api/todos?from=2026-10-01&to=2026-10-31
+
+### 10. MCPの窓口を確かめる
+POST http://localhost:8080/mcp
+
+### 11. 窓口と会話を始める
+POST http://localhost:8080/mcp
+Content-Type: application/json
+Accept: application/json, text/event-stream
+
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "initialize",
+  "params": {
+    "protocolVersion": "2025-06-18",
+    "capabilities": {},
+    "clientInfo": {
+      "name": "requests.http",
+      "version": "1.0"
+    }
+  }
+}
+
+### 12. 道具の一覧をもらう
+POST http://localhost:8080/mcp
+Content-Type: application/json
+Accept: application/json, text/event-stream
+Mcp-Session-Id: b7eb0ac4-08e0-43c9-bbe3-4bb4c15cdf3d
+
+{ "jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {} }
+
+### 9. 道具を1つ呼んでみる
+POST http://localhost:8080/mcp
+Content-Type: application/json
+Accept: application/json, text/event-stream
+Mcp-Session-Id: b7eb0ac4-08e0-43c9-bbe3-4bb4c15cdf3d
+
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "method": "tools/call",
+  "params": {
+    "name": "list_todos",
+    "arguments": {}
+  }
+}
