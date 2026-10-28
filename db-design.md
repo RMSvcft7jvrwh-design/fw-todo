@@ -9,7 +9,7 @@
 | テーブル名 | `todos` |
 | 保存する単位 | やること1件につき1行 |
 | 主キー（一行を一意に見分ける値） | `id` |
-| カラム（表の縦の項目）の数 | 9 |
+| カラム（表の縦の項目）の数 | 10 |
 
 ## 2. カラム一覧と要件との対応
 
@@ -24,6 +24,7 @@
 | `priority` | 優先度 | `INT` | 不可 | 1＝高、2＝中、3＝低。既定値（指定がないときにDBが入れる値）は2。 | 要件定義書 3 の `priority`、4.2「一覧」、4.3「登録・編集」、5.1「入力の確認」 |
 | `due_date` | 期限 | `DATE` | 可 | 未入力を許す。 | 要件定義書 3 の `due_date`、4.2「一覧」、4.3「登録・編集」、5.2「期限順の並び替え」 |
 | `completed` | 完了状態 | `BOOLEAN` | 不可 | 0＝未完了、1＝完了。既定値は0。 | 要件定義書 3 の `completed`、4.2「状態の表示」、4.3「編集時の完了チェック」 |
+| `completed_at` | 完了した日時 | `DATETIME` | 可 | 未完了から完了に変わったときの日本時間。以前から完了済みの行は日時不明のためNULLのまま。 | Chapter 15-7「Todoの完了日時」 |
 | `created_at` | 登録した日時 | `DATETIME` | 不可 | MySQLが登録時に自動で入れる。入力欄には出さない。 | 要件定義書 3 の `created_at` |
 | `updated_at` | 最後に直した日時 | `DATETIME` | 不可 | MySQLが登録時に入れ、更新時に自動で入れ直す。入力欄には出さない。 | 要件定義書 3 の `updated_at` |
 
@@ -40,6 +41,7 @@ CREATE TABLE todos (
     priority INT NOT NULL DEFAULT 2,
     due_date DATE NULL,
     completed BOOLEAN NOT NULL DEFAULT FALSE,
+    completed_at DATETIME NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
@@ -53,7 +55,7 @@ CREATE TABLE todos (
 
 ## 4. 保存と利用の決まり
 
-- 登録時に利用者が入力するのは `title`、`detail`、`category`、`priority`、`due_date`。編集時には `completed` も変更できる。`id`、`created_at`、`updated_at` は利用者に入力させない。
+- 登録時に利用者が入力するのは `title`、`detail`、`category`、`priority`、`due_date`。編集時には `completed` も変更できる。`id`、`completed_at`、`created_at`、`updated_at` は利用者に入力させない。
 - `priority` にDBの既定値2があっても、登録・編集画面では優先度を選ばなければ保存しない。DBの既定値と画面の入力確認は役割が異なる。
 - `title` が空欄・空白だけの場合、また必須項目が未選択の場合はアプリで保存を止める。`NOT NULL`（値なしを禁止する指定）だけでは空文字や空白だけを止められない。
 - 一覧では `title`、`category`、`priority`、`due_date`、`completed` を使う。`title` は文字を一部含むか、`category` は値が一致するかで絞り込む。`due_date` で期限順に並べる。

@@ -3,7 +3,7 @@
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.todoapp.TodoMapper">
     <select id="search" resultType="com.example.todoapp.Todo">
-        SELECT id, title, detail, category, priority, due_date, completed, created_at, updated_at
+        SELECT id, title, detail, category, priority, due_date, completed, completed_at, created_at, updated_at
         FROM todos
         <where>
             <if test="keyword != null and keyword != ''">
@@ -25,8 +25,15 @@
         </choose>
     </select>
 
+    <select id="searchCompletedBetween" resultType="com.example.todoapp.Todo">
+        SELECT id, title, detail, category, priority, due_date, completed, completed_at, created_at, updated_at
+        FROM todos
+        WHERE completed_at &gt;= #{from} AND completed_at &lt; #{toExclusive}
+        ORDER BY completed_at ASC
+    </select>
+
     <select id="findById" resultType="com.example.todoapp.Todo">
-        SELECT id, title, detail, category, priority, due_date, completed, created_at, updated_at
+        SELECT id, title, detail, category, priority, due_date, completed, completed_at, created_at, updated_at
         FROM todos
         WHERE id = #{id}
     </select>
@@ -44,6 +51,11 @@
             category = #{category},
             priority = #{priority},
             due_date = #{dueDate,jdbcType=DATE},
+            completed_at = CASE
+                WHEN completed = FALSE AND #{completed} = TRUE THEN #{completedAt,jdbcType=TIMESTAMP}
+                WHEN completed = TRUE AND #{completed} = FALSE THEN NULL
+                ELSE completed_at
+            END,
             completed = #{completed}
         WHERE id = #{id}
     </update>

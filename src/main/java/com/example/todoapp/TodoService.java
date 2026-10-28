@@ -1,6 +1,8 @@
 package com.example.todoapp;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -25,6 +27,10 @@ public class TodoService {
         return todoMapper.search(keyword, category, order, from, to);
     }
 
+    public List<Todo> searchCompletedBetween(LocalDateTime from, LocalDateTime toExclusive) {
+        return todoMapper.searchCompletedBetween(from, toExclusive);
+    }
+
     public Todo findById(Long id) {
         return todoMapper.findById(id);
     }
@@ -35,6 +41,8 @@ public class TodoService {
     }
 
     public void update(Todo todo) {
+        // The mapper uses this time only for an incomplete-to-complete transition.
+        todo.setCompletedAt(LocalDateTime.now(ZoneId.of("Asia/Tokyo")));
         todoMapper.update(todo);
         log.info("Todoを編集しました");
     }

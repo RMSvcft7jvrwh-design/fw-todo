@@ -11,6 +11,7 @@ services:                        # 起動するものの一覧
       - "3306:3306"              # PC側の番号:コンテナ側の番号
     volumes:                     # データの保存先
       - fw-db-data:/var/lib/mysql # 保存領域:MySQL内の保存場所
+      - ./initdb:/docker-entrypoint-initdb.d:ro # 空のDBを初期化するときだけ使うSQL
     healthcheck:
       test: ["CMD-SHELL", "MYSQL_PWD=\"$$MYSQL_ROOT_PASSWORD\" mysql -h 127.0.0.1 -u root -D todoapp -e 'SELECT 1' >/dev/null 2>&1"]
       interval: 10s

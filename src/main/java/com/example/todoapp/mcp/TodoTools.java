@@ -43,6 +43,23 @@ public class TodoTools {
                 .toList();
     }
 
+    @McpTool(name = "summarize_week", description = "指定期間のやることを集計・要約し、総件数・ジャンル別件数・期限切れ件数を返す（期間省略時は全件）")
+    public Map<String, Object> summarizeWeek(
+            @McpToolParam(required = false, description = "期限の範囲の開始日（yyyy-MM-dd）") String from,
+            @McpToolParam(required = false, description = "期限の範囲の終了日（yyyy-MM-dd）") String to) {
+        LocalDate fromDate = from == null ? null : LocalDate.parse(from);
+        LocalDate toDate = to == null ? null : LocalDate.parse(to);
+        List<Todo> todos = todoService.search(null, null, "asc", fromDate, toDate);
+        Map<String, Long> categoryCounts = todos.stream()
+                .collect(Collectors.groupingBy(Todo::getCategory, Collectors.counting()));
+        LocalDate today = LocalDate.now();
+        long overdueCount = todos.stream()
+                .filter(todo -> !Boolean.TRUE.equals(todo.getCompleted())
+                        && todo.getDueDate() != null && todo.getDueDate().isBefore(today))
+                .count();
+        return Map.of("totalCount", todos.size(), "categoryCounts", categoryCounts, "overdueCount", overdueCount);
+    }
+
     @McpTool(name = "get_todo", description = "やることを1件返す")
     public TodoDto getTodo(@McpToolParam(required = true, description = "取得するやることのID") Long id) {
         Todo todo = todoService.findById(id);

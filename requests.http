@@ -71,8 +71,8 @@ Accept: application/json, text/event-stream
 ### 12. 道具の一覧をもらう
 POST http://localhost:8080/mcp
 Content-Type: application/json
-Accept: application/json, text/event-stream
-Mcp-Session-Id: b7eb0ac4-08e0-43c9-bbe3-4bb4c15cdf3d
+Accept: application/jsonMcp-Session-Id: cd4f9d8d-11ab-4e39-b007-9d2bf78e12ca, text/event-stream
+
 
 { "jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {} }
 
@@ -81,7 +81,7 @@ POST http://localhost:8080/mcp
 Content-Type: application/json
 Accept: application/json, text/event-stream
 Mcp-Session-Id: b7eb0ac4-08e0-43c9-bbe3-4bb4c15cdf3d
-
+Mcp-Session-Id: e79bc302-8241-4b4d-847d-4ae6e23a1afc
 {
   "jsonrpc": "2.0",
   "id": 3,

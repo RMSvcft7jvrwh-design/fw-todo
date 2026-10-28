@@ -2,6 +2,9 @@ package com.example.todoapp;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.DayOfWeek;
+import java.time.ZoneId;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +20,39 @@ public class CalendarController {
 
     @GetMapping("/calendar")
     public String calendar(@RequestParam(required = false) Integer year,
-            @RequestParam(required = false) Integer month, Model model) {
-        YearMonth current = YearMonth.now();
+            @RequestParam(required = false) Integer month,
+            @RequestParam(defaultValue = "month") String view,
+            @RequestParam(required = false) String from, Model model) {
+        LocalDate today = LocalDate.now(ZoneId.of("Asia/Tokyo"));
+        model.addAttribute("today", today);
+        model.addAttribute("todayWeekStart", today.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)));
+        if (!view.equals("month") && !view.equals("week")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid view");
+        }
+
+        if (view.equals("week")) {
+            LocalDate requested;
+            try {
+                requested = from == null ? today : LocalDate.parse(from);
+            } catch (RuntimeException e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid from", e);
+            }
+            LocalDate weekStart = requested.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
+            LocalDate weekEnd = weekStart.plusDays(6);
+            model.addAttribute("isWeek", true);
+            model.addAttribute("firstDay", weekStart);
+            model.addAttribute("lastDay", weekEnd);
+            model.addAttribute("weeks", List.of(weekStart.datesUntil(weekEnd.plusDays(1)).toList()));
+            model.addAttribute("weekdayNames", List.of("日", "月", "火", "水", "木", "金", "土"));
+            model.addAttribute("previousWeek", weekStart.minusWeeks(1));
+            model.addAttribute("nextWeek", weekStart.plusWeeks(1));
+            model.addAttribute("weekFrom", weekStart);
+            model.addAttribute("year", requested.getYear());
+            model.addAttribute("month", requested.getMonthValue());
+            return "calendar";
+        }
+
+        YearMonth current = YearMonth.from(today);
         int selectedYear = year == null ? current.getYear() : year;
         int selectedMonth = month == null ? current.getMonthValue() : month;
         if (selectedYear < 1 || selectedYear > 9999 || selectedMonth < 1 || selectedMonth > 12) {
@@ -52,6 +86,8 @@ public class CalendarController {
         model.addAttribute("previousMonth", previous.getMonthValue());
         model.addAttribute("nextYear", next.getYear());
         model.addAttribute("nextMonth", next.getMonthValue());
+        model.addAttribute("weekFrom", selected.equals(current) ? today : firstDay);
+        model.addAttribute("isWeek", false);
         return "calendar";
     }
 }

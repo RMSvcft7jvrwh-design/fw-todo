@@ -1,5 +1,8 @@
 package com.example.todoapp;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+
 import jakarta.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -36,6 +39,7 @@ public class HomeController {
         model.addAttribute("keyword", keyword);
         model.addAttribute("category", category);
         model.addAttribute("order", sortOrder);
+        model.addAttribute("today", LocalDate.now(ZoneId.of("Asia/Tokyo")));
         return "todos";
     }
 

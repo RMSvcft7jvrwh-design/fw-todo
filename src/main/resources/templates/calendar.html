@@ -8,20 +8,34 @@
 </head>
 <body>
     <main class="container">
-        <h1 class="page-title" th:text="|${year}年${month}月|">カレンダー</h1>
+        <h1 class="page-title" th:if="${isWeek}" th:text="|${firstDay.year}年${firstDay.monthValue}月${firstDay.dayOfMonth}日〜${lastDay.year}年${lastDay.monthValue}月${lastDay.dayOfMonth}日|">カレンダー</h1>
+        <h1 class="page-title" th:unless="${isWeek}" th:text="|${year}年${month}月|">カレンダー</h1>
         <nav class="calendar-nav" aria-label="カレンダーの操作">
             <div class="calendar-nav-group">
-                <a class="link" th:href="@{/calendar(year=${previousYear},month=${previousMonth})}">前の月</a>
-                <a class="link" th:href="@{/calendar(year=${nextYear},month=${nextMonth})}">次の月</a>
+                <a class="link" th:if="${isWeek}" th:href="@{/calendar(view='week',from=${previousWeek})}">前の週</a>
+                <a class="link" th:if="${isWeek}" th:href="@{/calendar(view='week',from=${nextWeek})}">次の週</a>
+                <a class="link" th:unless="${isWeek}" th:href="@{/calendar(year=${previousYear},month=${previousMonth})}">前の月</a>
+                <a class="link" th:unless="${isWeek}" th:href="@{/calendar(year=${nextYear},month=${nextMonth})}">次の月</a>
+                <a class="btn sub" th:href="${isWeek} ? @{/calendar(view='week',from=${todayWeekStart})} : @{/calendar}">今日へ</a>
+            </div>
+            <div class="calendar-view-toggle" role="group" aria-label="表示切り替え">
+                <span class="calendar-view-label" th:classappend="${!isWeek} ? 'is-active'">月</span>
+                <a class="calendar-view-switch" th:classappend="${isWeek} ? 'is-week'"
+                   th:href="${isWeek} ? @{/calendar(year=${year},month=${month})} : @{/calendar(view='week',from=${weekFrom})}"
+                   th:attr="aria-label=${isWeek ? '月表示に切り替える' : '週表示に切り替える'}">
+                    <span class="calendar-view-thumb" aria-hidden="true"></span>
+                </a>
+                <span class="calendar-view-label" th:classappend="${isWeek} ? 'is-active'">週</span>
             </div>
             <div class="calendar-nav-group">
+                <a class="link" th:if="${isWeek}" th:href="@{/reports/weekly(from=${firstDay})}">この週のレポート</a>
                 <a class="link" href="/todos">表で見る</a>
                 <a class="link" href="/todos/new">新規登録</a>
             </div>
         </nav>
         <div class="calendar-scroll">
-            <table class="calendar-table" th:attr="data-from=${firstDay},data-to=${lastDay}">
-                <thead>
+            <table class="calendar-table" th:classappend="${isWeek} ? 'calendar-table-week'" th:attr="data-from=${firstDay},data-to=${lastDay},data-today=${today},data-view=${isWeek ? 'week' : 'month'}">
+                <thead th:unless="${isWeek}">
                     <tr>
                         <th scope="col">日</th>
                         <th scope="col">月</th>
@@ -32,14 +46,25 @@
                         <th scope="col">土</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody th:unless="${isWeek}">
                     <tr th:each="week : ${weeks}">
                         <th:block th:each="date : ${week}">
-                            <td th:if="${date != null}" th:attr="data-date=${date}">
-                                <div class="calendar-cell-content" th:text="${date.dayOfMonth}"></div>
+                            <td th:if="${date != null}" th:classappend="${date.equals(today)} ? 'calendar-today'" th:attr="data-date=${date}">
+                                <div class="calendar-cell-content">
+                                    <span th:text="${date.dayOfMonth}"></span><span class="calendar-today-badge" th:if="${date.equals(today)}">今日</span>
+                                </div>
                             </td>
                             <td th:unless="${date != null}" class="calendar-empty"></td>
                         </th:block>
+                    </tr>
+                </tbody>
+                <tbody th:if="${isWeek}">
+                    <tr th:each="date, day : ${weeks[0]}" th:classappend="${date.equals(today)} ? 'calendar-today'" th:attr="data-date=${date}">
+                        <th scope="row">
+                            <time th:datetime="${date}" th:text="|${date.monthValue}月${date.dayOfMonth}日（${weekdayNames[day.index]}）|">日付</time>
+                            <span class="calendar-today-badge" th:if="${date.equals(today)}">今日</span>
+                        </th>
+                        <td><div class="calendar-cell-content"></div></td>
                     </tr>
                 </tbody>
             </table>
@@ -50,7 +75,8 @@
             const table = document.querySelector('.calendar-table');
             const from = table.dataset.from;
             const to = table.dataset.to;
-            const cells = table.querySelectorAll('td[data-date]');
+            const isWeek = table.dataset.view === 'week';
+            const cells = table.querySelectorAll('[data-date]');
 
             try {
                 const res = await fetch(`/api/todos?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`);
@@ -58,8 +84,7 @@
                     throw new Error('Todoの取得に失敗しました');
                 }
                 const todos = await res.json();
-                const now = new Date();
-                const localToday = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+                const localToday = table.dataset.today;
 
                 function createTodoLink(todo) {
                     const item = document.createElement('a');
@@ -75,14 +100,18 @@
                 for (const cell of cells) {
                     const content = cell.querySelector('.calendar-cell-content');
                     const dayTodos = todos.filter(todo => todo.dueDate === cell.dataset.date);
-                    for (const todo of dayTodos.slice(0, 3)) {
+                    if (isWeek && dayTodos.length === 0) {
+                        content.textContent = '予定なし';
+                        content.classList.add('calendar-week-empty');
+                    }
+                    for (const todo of (isWeek ? dayTodos : dayTodos.slice(0, 3))) {
                         const item = createTodoLink(todo);
-                        if (dayTodos.length >= 3) {
+                        if (!isWeek && dayTodos.length >= 3) {
                             item.classList.add('calendar-todo-compact');
                         }
                         content.appendChild(item);
                     }
-                    if (dayTodos.length > 3) {
+                    if (!isWeek && dayTodos.length > 3) {
                         const details = document.createElement('details');
                         details.classList.add('calendar-more');
                         const summary = document.createElement('summary');
@@ -116,7 +145,7 @@
             const table = document.querySelector('.calendar-table');
             const from = table.dataset.from;
             const to = table.dataset.to;
-            const cells = table.querySelectorAll('td[data-date]');
+            const cells = table.querySelectorAll('[data-date]');
 
             for (const cell of cells) {
                 const weekday = new Date(`${cell.dataset.date}T00:00:00Z`).getUTCDay();
