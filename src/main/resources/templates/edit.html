@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>編集</title>
+    <script src="/js/background-theme.js"></script>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <main class="container">
         <h1 class="page-title">編集</h1>
         <form th:action="@{/todos/{id}/confirm(id=${id})}" method="post" th:object="${todo}">
+            <input type="hidden" name="returnTo" th:value="${returnTo}">
             <div class="form-row">
                 <label class="form-label" for="title">やること</label>
                 <input class="form-input" type="text" th:field="*{title}">
@@ -51,8 +53,9 @@
                 <input type="checkbox" th:field="*{completed}">
             </div>
             <button class="btn" type="submit">確認する</button>
-            <a class="btn sub" href="/todos">一覧へ</a>
+            <a class="btn sub" th:href="${returnTo}">戻る</a>
         </form>
     </main>
+    <div class="idle-pet" role="img" aria-label="メカ祥子が待機している"></div>
 </body>
 </html>

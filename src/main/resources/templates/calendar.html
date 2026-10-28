@@ -4,33 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>カレンダー</title>
+    <script src="/js/background-theme.js"></script>
     <link rel="stylesheet" href="/css/style.css">
+    <script th:if="${isWeek}" src="/js/game-clock.js" defer></script>
+    <script src="/js/calendar-pet.js" defer></script>
 </head>
 <body>
-    <main class="container">
-        <h1 class="page-title" th:if="${isWeek}" th:text="|${firstDay.year}年${firstDay.monthValue}月${firstDay.dayOfMonth}日〜${lastDay.year}年${lastDay.monthValue}月${lastDay.dayOfMonth}日|">カレンダー</h1>
-        <h1 class="page-title" th:unless="${isWeek}" th:text="|${year}年${month}月|">カレンダー</h1>
+    <main class="container" th:classappend="${isWeek} ? 'clock-page'">
+        <time class="game-clock" th:if="${isWeek}">
+            <span class="game-clock-date">日本時間</span>
+            <span class="game-clock-time">--:--:--</span>
+        </time>
+        <h1 class="page-title" th:if="${isWeek}" th:text="|${firstDay.year}/${#numbers.formatInteger(firstDay.monthValue, 2)}/${#numbers.formatInteger(firstDay.dayOfMonth, 2)}〜${lastDay.year}/${#numbers.formatInteger(lastDay.monthValue, 2)}/${#numbers.formatInteger(lastDay.dayOfMonth, 2)}|">2026/10/25〜2026/10/31</h1>
+        <h1 class="page-title" th:unless="${isWeek}" th:text="|${year}/${#numbers.formatInteger(month, 2)}|">2026/10</h1>
         <nav class="calendar-nav" aria-label="カレンダーの操作">
             <div class="calendar-nav-group">
-                <a class="link" th:if="${isWeek}" th:href="@{/calendar(view='week',from=${previousWeek})}">前の週</a>
-                <a class="link" th:if="${isWeek}" th:href="@{/calendar(view='week',from=${nextWeek})}">次の週</a>
-                <a class="link" th:unless="${isWeek}" th:href="@{/calendar(year=${previousYear},month=${previousMonth})}">前の月</a>
-                <a class="link" th:unless="${isWeek}" th:href="@{/calendar(year=${nextYear},month=${nextMonth})}">次の月</a>
-                <a class="btn sub" th:href="${isWeek} ? @{/calendar(view='week',from=${todayWeekStart})} : @{/calendar}">今日へ</a>
+                <a th:if="${isWeek}" th:href="@{/calendar(view='week',from=${previousWeek})}">前の週</a>
+                <a th:if="${isWeek}" th:href="@{/calendar(view='week',from=${nextWeek})}">次の週</a>
+                <a th:unless="${isWeek}" th:href="@{/calendar(year=${previousYear},month=${previousMonth})}">前の月</a>
+                <a th:unless="${isWeek}" th:href="@{/calendar(year=${nextYear},month=${nextMonth})}">次の月</a>
+                <a th:href="${isWeek} ? @{/calendar(view='week',from=${todayWeekStart})} : @{/calendar}">今日へ</a>
             </div>
-            <div class="calendar-view-toggle" role="group" aria-label="表示切り替え">
-                <span class="calendar-view-label" th:classappend="${!isWeek} ? 'is-active'">月</span>
-                <a class="calendar-view-switch" th:classappend="${isWeek} ? 'is-week'"
-                   th:href="${isWeek} ? @{/calendar(year=${year},month=${month})} : @{/calendar(view='week',from=${weekFrom})}"
-                   th:attr="aria-label=${isWeek ? '月表示に切り替える' : '週表示に切り替える'}">
-                    <span class="calendar-view-thumb" aria-hidden="true"></span>
-                </a>
-                <span class="calendar-view-label" th:classappend="${isWeek} ? 'is-active'">週</span>
+            <div class="calendar-view-tabs" role="group" aria-label="表示切り替え">
+                <a class="calendar-view-tab" th:classappend="${!isWeek} ? 'is-active'"
+                   th:href="@{/calendar(year=${year},month=${month})}"
+                   th:attr="aria-current=${!isWeek ? 'page' : null}">月間</a>
+                <a class="calendar-view-tab" th:classappend="${isWeek} ? 'is-active'"
+                   th:href="@{/calendar(view='week',from=${weekFrom})}"
+                   th:attr="aria-current=${isWeek ? 'page' : null}">週間</a>
             </div>
             <div class="calendar-nav-group">
-                <a class="link" th:if="${isWeek}" th:href="@{/reports/weekly(from=${firstDay})}">この週のレポート</a>
-                <a class="link" href="/todos">表で見る</a>
-                <a class="link" href="/todos/new">新規登録</a>
+                <a th:if="${isWeek}" th:href="@{/reports/weekly(from=${firstDay})}">この週のレポート</a>
+                <a href="/todos">表で見る</a>
+                <a href="/todos/new">新規登録</a>
             </div>
         </nav>
         <div class="calendar-scroll">
@@ -62,14 +68,19 @@
                     <tr th:each="date, day : ${weeks[0]}" th:classappend="${date.equals(today)} ? 'calendar-today'" th:attr="data-date=${date}">
                         <th scope="row">
                             <time th:datetime="${date}" th:text="|${date.monthValue}月${date.dayOfMonth}日（${weekdayNames[day.index]}）|">日付</time>
-                            <span class="calendar-today-badge" th:if="${date.equals(today)}">今日</span>
                         </th>
-                        <td><div class="calendar-cell-content"></div></td>
+                        <td>
+                            <div class="calendar-cell-content"></div>
+                            <span class="calendar-today-badge" th:if="${date.equals(today)}">今日</span>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </main>
+    <div class="calendar-pet-track" role="img" aria-label="メカ祥子が草地を歩き回る">
+        <div class="calendar-pet" aria-hidden="true"></div>
+    </div>
     <script>
         async function loadTodos() {
             const table = document.querySelector('.calendar-table');
@@ -85,10 +96,13 @@
                 }
                 const todos = await res.json();
                 const localToday = table.dataset.today;
+                const returnTo = isWeek
+                    ? `/calendar?view=week&from=${from}`
+                    : `/calendar?year=${from.slice(0, 4)}&month=${Number(from.slice(5, 7))}`;
 
                 function createTodoLink(todo) {
                     const item = document.createElement('a');
-                    item.href = `/todos/${encodeURIComponent(todo.id)}/edit`;
+                    item.href = `/todos/${encodeURIComponent(todo.id)}/edit?returnTo=${encodeURIComponent(returnTo)}`;
                     item.classList.add('calendar-todo-link');
                     item.textContent = todo.title;
                     if (!todo.completed && todo.dueDate < localToday) {
@@ -179,8 +193,61 @@
             }
         }
 
-        loadTodos();
-        loadHolidays();
+        function fitWeekCalendar() {
+            const table = document.querySelector('.calendar-table-week');
+            if (!table) {
+                return;
+            }
+
+            const contents = [...table.querySelectorAll('tbody .calendar-cell-content')];
+            for (const content of contents) {
+                content.style.removeProperty('max-height');
+            }
+            if (window.innerWidth < 720) {
+                return;
+            }
+
+            const scrollArea = table.closest('.calendar-scroll');
+            const tableTop = scrollArea.getBoundingClientRect().top + window.scrollY;
+            const availableHeight = window.innerHeight - tableTop - 24;
+            if (table.getBoundingClientRect().height <= availableHeight) {
+                return;
+            }
+
+            function setContentLimit(height) {
+                for (const content of contents) {
+                    content.style.maxHeight = `${height}px`;
+                }
+            }
+
+            let lowest = 32;
+            let highest = Math.max(lowest, ...contents.map(content => content.scrollHeight));
+            setContentLimit(lowest);
+            if (table.getBoundingClientRect().height > availableHeight) {
+                return;
+            }
+
+            while (lowest < highest) {
+                const middle = Math.ceil((lowest + highest) / 2);
+                setContentLimit(middle);
+                if (table.getBoundingClientRect().height <= availableHeight) {
+                    lowest = middle;
+                } else {
+                    highest = middle - 1;
+                }
+            }
+            setContentLimit(lowest);
+        }
+
+        let fitFrame;
+        function scheduleWeekCalendarFit() {
+            window.cancelAnimationFrame(fitFrame);
+            fitFrame = window.requestAnimationFrame(fitWeekCalendar);
+        }
+
+        loadTodos().then(scheduleWeekCalendarFit);
+        loadHolidays().then(scheduleWeekCalendarFit);
+        window.addEventListener('resize', scheduleWeekCalendarFit);
     </script>
 </body>
 </html>

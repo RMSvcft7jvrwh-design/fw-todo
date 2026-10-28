@@ -1,7 +1,10 @@
 package com.example.todoapp;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.ZoneId;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import jakarta.validation.Valid;
 
@@ -17,6 +20,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class HomeController {
+
+    private static final String DEFAULT_RETURN_TO = "/todos";
+    private static final Pattern MONTH_RETURN_TO = Pattern.compile("/calendar\\?year=(\\d{4})&month=(\\d{1,2})");
+    private static final Pattern WEEK_RETURN_TO = Pattern.compile("/calendar\\?view=week&from=(\\d{4}-\\d{2}-\\d{2})");
 
     private final TodoService todoService;
 
@@ -70,7 +77,9 @@ public class HomeController {
     }
 
     @GetMapping("/todos/{id}/edit")
-    public String edit(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes) {
+    public String edit(@PathVariable("id") Long id,
+            @RequestParam(name = "returnTo", required = false) String returnTo,
+            Model model, RedirectAttributes redirectAttributes) {
         Todo todo = todoService.findById(id);
         if (todo == null) {
             redirectAttributes.addFlashAttribute("message", "見つかりませんでした");
@@ -78,13 +87,16 @@ public class HomeController {
         }
         model.addAttribute("todo", todo);
         model.addAttribute("id", id);
+        model.addAttribute("returnTo", safeReturnTo(returnTo));
         return "edit";
     }
 
     @PostMapping("/todos/{id}/confirm")
     public String editConfirm(@PathVariable("id") Long id, @Valid @ModelAttribute("todo") Todo todo,
-            BindingResult bindingResult, Model model) {
+            BindingResult bindingResult, @RequestParam(name = "returnTo", required = false) String returnTo,
+            Model model) {
         model.addAttribute("id", id);
+        model.addAttribute("returnTo", safeReturnTo(returnTo));
         if (bindingResult.hasErrors()) {
             return "edit";
         }
@@ -92,18 +104,54 @@ public class HomeController {
     }
 
     @PostMapping("/todos/{id}/edit")
-    public String editAgain(@PathVariable("id") Long id, @ModelAttribute("todo") Todo todo, Model model) {
+    public String editAgain(@PathVariable("id") Long id, @ModelAttribute("todo") Todo todo,
+            @RequestParam(name = "returnTo", required = false) String returnTo, Model model) {
         model.addAttribute("id", id);
+        model.addAttribute("returnTo", safeReturnTo(returnTo));
         return "edit";
     }
 
     @PostMapping("/todos/{id}")
     public String update(@PathVariable("id") Long id, @ModelAttribute("todo") Todo todo,
+            @RequestParam(name = "returnTo", required = false) String returnTo,
             RedirectAttributes redirectAttributes) {
         todo.setId(id);
         todoService.update(todo);
         redirectAttributes.addFlashAttribute("message", "保存しました");
-        return "redirect:/todos";
+        return "redirect:" + safeReturnTo(returnTo);
+    }
+
+    private String safeReturnTo(String returnTo) {
+        if (DEFAULT_RETURN_TO.equals(returnTo)) {
+            return DEFAULT_RETURN_TO;
+        }
+
+        Matcher month = MONTH_RETURN_TO.matcher(returnTo == null ? "" : returnTo);
+        if (month.matches()) {
+            try {
+                int year = Integer.parseInt(month.group(1));
+                int monthNumber = Integer.parseInt(month.group(2));
+                if (year >= 1) {
+                    YearMonth.of(year, monthNumber);
+                    return "/calendar?year=" + year + "&month=" + monthNumber;
+                }
+            } catch (RuntimeException ignored) {
+                return DEFAULT_RETURN_TO;
+            }
+        }
+
+        Matcher week = WEEK_RETURN_TO.matcher(returnTo == null ? "" : returnTo);
+        if (week.matches()) {
+            try {
+                LocalDate from = LocalDate.parse(week.group(1));
+                if (from.getYear() >= 1) {
+                    return "/calendar?view=week&from=" + from;
+                }
+            } catch (RuntimeException ignored) {
+                return DEFAULT_RETURN_TO;
+            }
+        }
+        return DEFAULT_RETURN_TO;
     }
 
     @GetMapping("/todos/{id}/delete")

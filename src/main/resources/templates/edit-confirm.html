@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>編集の確認</title>
+    <script src="/js/background-theme.js"></script>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -16,6 +17,7 @@
         <p class="confirm-value">期限：<span th:text="${todo.dueDate == null ? '（入力なし）' : todo.dueDate}">（入力なし）</span></p>
         <p class="confirm-value">完了：<span th:text="${todo.completed == null ? '（入力なし）' : (todo.completed ? '完了' : '未完了')}">（入力なし）</span></p>
         <form th:action="@{/todos/{id}(id=${id})}" method="post" th:object="${todo}">
+            <input type="hidden" name="returnTo" th:value="${returnTo}">
             <input type="hidden" th:field="*{title}">
             <input type="hidden" th:field="*{detail}">
             <input type="hidden" th:field="*{category}">
@@ -28,5 +30,6 @@
             </div>
         </form>
     </main>
+    <div class="idle-pet" role="img" aria-label="メカ祥子が待機している"></div>
 </body>
 </html>
