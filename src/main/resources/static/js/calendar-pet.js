@@ -1,21 +1,16 @@
 (() => {
-    const track = document.querySelector('.calendar-pet-track');
-    const pet = track?.querySelector('.calendar-pet');
+    const track = document.querySelector('.calendar-pet-track, .report-pet-track');
+    const pet = track?.querySelector('.calendar-pet, .report-pet');
     if (!pet) return;
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const spriteWidth = 124;
-    const spriteHeight = 178;
-    const walkFrames = {
-        right: [
-            [27, 190, 117, 178], [199, 190, 116, 178], [370, 190, 118, 178], [540, 190, 122, 178],
-            [713, 190, 120, 178], [884, 190, 121, 178], [1057, 190, 119, 178], [1230, 190, 116, 178]
-        ],
-        left: [
-            [28, 377, 116, 177], [200, 377, 116, 177], [371, 377, 118, 177], [541, 377, 122, 177],
-            [714, 377, 120, 177], [886, 377, 120, 177], [1058, 377, 119, 177], [1231, 377, 116, 177]
-        ]
-    };
+    const petGroup = window.AppearanceCatalog.pet;
+    const selectedPet = petGroup.choices.find(choice => choice.id === window.AppearanceSettings.get().pet);
+    const defaultPet = petGroup.choices.find(choice => choice.id === petGroup.defaultId);
+    const sprite = selectedPet?.sprite?.frames?.walk ? selectedPet.sprite : defaultPet.sprite;
+    const spriteWidth = sprite.viewport.width;
+    const spriteHeight = sprite.viewport.height;
+    const walkFrames = sprite.frames.walk;
 
     let position = 0;
     let direction = -1;
@@ -34,6 +29,7 @@
     }
 
     function placePet() {
+        if (pet.classList.contains('is-placed')) return;
         position = Math.max(0, Math.min(position, travelLimit()));
         pet.style.transform = `translateX(${position}px)`;
     }
@@ -51,7 +47,7 @@
         pet.style.removeProperty('background-position');
         lastTime = 0;
         animationId = undefined;
-        if (!reducedMotion.matches) {
+        if (!reducedMotion.matches && !pet.classList.contains('is-placed')) {
             pauseId = window.setTimeout(startWalk, duration);
         }
     }
@@ -68,7 +64,7 @@
     }
 
     function step(now) {
-        if (!walking || reducedMotion.matches) return;
+        if (!walking || reducedMotion.matches || pet.classList.contains('is-placed')) return;
         if (lastTime === 0) {
             lastTime = now;
             animationId = window.requestAnimationFrame(step);
@@ -103,7 +99,7 @@
 
     function startWalk() {
         pauseId = undefined;
-        if (reducedMotion.matches || travelLimit() === 0) return;
+        if (reducedMotion.matches || pet.classList.contains('is-placed') || travelLimit() === 0) return;
         walking = true;
         pet.classList.add('is-walking');
         frameIndex = 0;
@@ -115,6 +111,7 @@
 
     function resetMotion() {
         stopWalk();
+        if (pet.classList.contains('is-placed')) return;
         if (!initialized) {
             position = travelLimit();
             initialized = true;
@@ -129,6 +126,7 @@
         }
     }
 
+    pet.addEventListener('pet:pickup', stopWalk);
     window.addEventListener('resize', placePet);
     reducedMotion.addEventListener('change', resetMotion);
     resetMotion();

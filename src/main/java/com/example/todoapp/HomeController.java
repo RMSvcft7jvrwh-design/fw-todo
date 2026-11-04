@@ -37,6 +37,11 @@ public class HomeController {
         return "index";
     }
 
+    @GetMapping("/settings")
+    public String settings() {
+        return "settings";
+    }
+
     @GetMapping("/todos")
     public String todos(@RequestParam(name = "keyword", defaultValue = "") String keyword,
             @RequestParam(name = "category", defaultValue = "") String category,

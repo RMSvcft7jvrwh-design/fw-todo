@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>見た目の設定</title>
+    <script src="/js/background-theme.js"></script>
+    <script src="/js/customization/catalog.js?v=2"></script>
+    <script src="/js/customization/storage.js?v=1"></script>
+    <script src="/js/customization/apply.js?v=1"></script>
+    <script src="/js/customization/settings-ui.js?v=1" defer></script>
+    <link rel="stylesheet" href="/css/style.css?v=appearance-3">
+</head>
+<body>
+    <main class="container settings-page">
+        <h1 class="page-title">見た目の設定</h1>
+        <div class="settings-panel">
+            <p class="settings-intro">選ぶとすぐに保存されます。設定はこのブラウザに残ります。</p>
+            <form id="appearance-settings">
+                <div id="appearance-options"></div>
+                <div class="settings-footer">
+                    <button class="btn sub" id="appearance-reset" type="button">初期設定に戻す</button>
+                    <span id="appearance-status" role="status" aria-live="polite"></span>
+                </div>
+            </form>
+            <nav class="settings-nav" aria-label="画面移動">
+                <a class="btn sub" th:href="@{/}" href="/">ホームへ</a>
+                <a class="btn" th:href="@{/todos}" href="/todos">やること一覧へ</a>
+            </nav>
+        </div>
+    </main>
+</body>
+</html>
