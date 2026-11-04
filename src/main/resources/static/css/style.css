@@ -85,7 +85,6 @@ html[data-wallpaper="simple"] .game-clock {
 .container > p:not(.flash),
 .container > form,
 .sort-links,
-.calendar-nav,
 .report-intro-content,
 .report-section {
     padding: 12px;
@@ -1117,23 +1116,31 @@ html[data-pet="hide"] .report-pet {
                page-pet-idle 5s steps(1, end) 1.2s infinite;
 }
 
+.report-pet.is-animating,
+.calendar-pet.is-animating,
+.idle-pet.is-animating,
+.idle-pet.is-jumping.is-animating {
+    animation: none;
+}
+
 .report-pet.is-dragging.is-grab-ready,
 .calendar-pet.is-dragging.is-grab-ready,
 .idle-pet.is-dragging.is-grab-ready {
     background-image: var(--pet-grab-image);
-    background-position: -13px 29px;
+    background-size: 1548px auto;
+    background-position: -33.5px -16px;
     animation: pet-grabbed 0.8s steps(1, end) infinite;
 }
 
 @keyframes pet-grabbed {
-    0%, 12.49% { background-position: -13px 29px; }
-    12.5%, 24.99% { background-position: -163px 29px; }
-    25%, 37.49% { background-position: -313px 29px; }
-    37.5%, 49.99% { background-position: -463px 29px; }
-    50%, 62.49% { background-position: -613px 29px; }
-    62.5%, 74.99% { background-position: -763px 29px; }
-    75%, 87.49% { background-position: -913px 29px; }
-    87.5%, 100% { background-position: -1063px 29px; }
+    0%, 12.49% { background-position: -33.5px -16px; }
+    12.5%, 24.99% { background-position: -228.5px -16px; }
+    25%, 37.49% { background-position: -425.6px -16px; }
+    37.5%, 49.99% { background-position: -619px -16px; }
+    50%, 62.49% { background-position: -814px -16px; }
+    62.5%, 74.99% { background-position: -1005.5px -16px; }
+    75%, 87.49% { background-position: -1197.5px -16px; }
+    87.5%, 100% { background-position: -1389.5px -16px; }
 }
 
 @keyframes page-pet-jump {

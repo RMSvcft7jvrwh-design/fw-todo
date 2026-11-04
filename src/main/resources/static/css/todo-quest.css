@@ -1,0 +1,191 @@
+.container.quest-page {
+    --quest-frame-side: min(14.32vw, 137.5px);
+    --quest-frame-top: min(13.67vw, 131.25px);
+    --quest-frame-bottom: min(13.02vw, 125px);
+    --quest-open-side: min(9.12vw, 87.5px);
+    --quest-open-top: min(10.68vw, 102.5px);
+    --quest-open-bottom: min(8.12vw, 78px);
+    --quest-paper-pad-x: 16px;
+    --quest-paper-pad-y: 12px;
+    --quest-ink: #49301d;
+    max-width: 1040px;
+    padding: 60px 16px 20px;
+}
+
+.quest-page .quest-board {
+    position: relative;
+    isolation: isolate;
+    width: min(100%, 960px);
+    margin: 0 auto 30px;
+    padding: var(--quest-frame-top) var(--quest-frame-side) var(--quest-frame-bottom);
+    color: var(--quest-ink);
+}
+
+/* The texture fills the measured opening; the frame is painted above it. */
+.quest-page .quest-board::before {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    inset: calc(var(--quest-open-top) - 8px) calc(var(--quest-open-side) - 8px)
+           calc(var(--quest-open-bottom) - 8px);
+    background: #f4d4a1 url('/assets/todos/themes/quest/paper.png') center / 680px auto repeat;
+    pointer-events: none;
+}
+
+.quest-page .quest-board::after {
+    content: '';
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    border-style: solid;
+    border-width: var(--quest-frame-top) var(--quest-frame-side) var(--quest-frame-bottom);
+    border-image-source: url('/assets/todos/themes/quest/frame.png');
+    border-image-slice: 210 220 200 220;
+    border-image-width: 1;
+    border-image-repeat: stretch;
+    pointer-events: none;
+}
+
+.quest-page .quest-paper {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+    padding: var(--quest-paper-pad-y) var(--quest-paper-pad-x);
+}
+
+.quest-page .quest-title {
+    position: absolute;
+    z-index: 4;
+    top: calc(var(--quest-frame-top) * .35);
+    left: 50%;
+    display: grid;
+    place-items: center;
+    width: clamp(190px, 30.6vw, 294px);
+    aspect-ratio: 470 / 155;
+    margin: 0;
+    padding: 0 18px;
+    background: url('/assets/todos/themes/quest/title.png') center / contain no-repeat;
+    color: #4b2c17;
+    font-size: clamp(17px, 2.2vw, 25px);
+    line-height: 1.25;
+    text-align: center;
+    text-shadow: 0 1px rgba(255, 242, 207, .7);
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+
+.quest-page .quest-clip {
+    position: absolute;
+    z-index: 3;
+    top: calc(var(--quest-frame-top) * -.28);
+    left: 50%;
+    width: clamp(120px, 20vw, 220px);
+    height: auto;
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+
+.quest-page .quest-seal {
+    position: absolute;
+    z-index: 3;
+    right: calc(var(--quest-frame-side) * .28);
+    bottom: calc(var(--quest-frame-bottom) * -.3);
+    width: clamp(60px, 8vw, 100px);
+    height: auto;
+    pointer-events: none;
+}
+
+.quest-page .quest-paper form {
+    min-width: 0;
+    margin: 0;
+}
+
+.quest-page .form-row {
+    min-width: 0;
+    margin-bottom: 10px;
+}
+
+.quest-page .form-label {
+    margin-bottom: 2px;
+    font-weight: 700;
+}
+
+.quest-page .form-input {
+    display: block;
+    min-width: 0;
+    min-height: 40px;
+    max-width: 100%;
+    border-color: #9b714b;
+    background: rgba(255, 250, 234, .93);
+    color: #35251a;
+    font-size: 16px;
+}
+
+.quest-page .form-input:focus-visible,
+.quest-page input[type='checkbox']:focus-visible,
+.quest-page .btn:focus-visible {
+    outline: 3px solid #78511d;
+    outline-offset: 2px;
+}
+
+.quest-page .error {
+    margin-top: 4px;
+    color: #8f1e17;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.quest-page .confirm-value {
+    margin: 0 0 10px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+.quest-page .quest-actions,
+.quest-page .confirm-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.quest-page .btn {
+    max-width: 100%;
+    border-color: #694329;
+    background: #70452a;
+    color: #fff8e5;
+    white-space: normal;
+}
+
+.quest-page .btn.sub {
+    background: #fff4d8;
+    color: #4b2c17;
+}
+
+@media (max-width: 600px) {
+    .container.quest-page {
+        --quest-paper-pad-x: 8px;
+        --quest-paper-pad-y: 38px;
+        padding: 78px 8px 36px;
+    }
+
+    .quest-page .quest-board {
+        margin-bottom: 58px;
+    }
+
+    .quest-page .quest-paper {
+        padding-bottom: 10px;
+    }
+
+    .quest-page .quest-title {
+        font-size: 18px;
+    }
+
+    .quest-page .quest-actions .btn,
+    .quest-page .confirm-actions .btn {
+        flex: 1 1 auto;
+        text-align: center;
+    }
+}

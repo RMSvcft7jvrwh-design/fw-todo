@@ -1,0 +1,251 @@
+.report-adventure {
+    --notebook-scale: .5;
+    --frame-block: calc(125px * var(--notebook-scale));
+    --frame-inline: calc(130px * var(--notebook-scale));
+    /* Source opening at the centre: x=70..1128, y=90..590 of 1200x675. */
+    --paper-top: calc(90px * var(--notebook-scale) - 2px);
+    --paper-bottom: calc(84px * var(--notebook-scale) - 2px);
+    --paper-inline: calc(70px * var(--notebook-scale) - 2px);
+    --ring-width: calc(147px * var(--notebook-scale));
+    --bookmark-width: calc(129px * var(--notebook-scale));
+    --tab-width: calc(180px * var(--notebook-scale));
+    --ink: #3c291a;
+    max-width: 1180px;
+    color: var(--ink);
+}
+
+.report-adventure .adventure-notebook {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    width: min(1040px, 100%);
+    min-width: 0;
+    min-height: 0;
+    margin-inline: auto;
+    padding: var(--paper-top) var(--paper-inline) var(--paper-bottom);
+}
+
+.report-adventure .adventure-notebook::after {
+    content: '';
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    border: var(--frame-block) solid transparent;
+    border-inline-width: var(--frame-inline);
+    border-image-source: url('/assets/reports/themes/adventure/notebook-frame.png');
+    border-image-slice: 125 130 125 130;
+    border-image-width: var(--frame-block) var(--frame-inline);
+    border-image-repeat: stretch;
+    pointer-events: none;
+}
+
+.report-adventure .adventure-notebook-paper {
+    min-width: 0;
+    min-height: 0;
+    background: #f5dfad url('/assets/reports/themes/adventure/paper-texture.png') center / cover;
+}
+
+.report-adventure .adventure-notebook-scroll {
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    overflow: auto;
+    padding: 16px calc(var(--tab-width) * .62 + 12px) 18px
+             calc(var(--ring-width) * .65 + 16px);
+    scrollbar-color: #986835 #ead4a7;
+    overscroll-behavior: contain;
+}
+
+.report-adventure .adventure-notebook-rings,
+.report-adventure .adventure-notebook-bookmark,
+.report-adventure .adventure-notebook-tabs {
+    position: absolute;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.report-adventure .adventure-notebook-rings {
+    top: 15%;
+    bottom: 15%;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: var(--ring-width);
+}
+
+.report-adventure .adventure-notebook-rings img,
+.report-adventure .adventure-notebook-tabs img {
+    display: block;
+    width: 100%;
+    height: auto;
+    flex: none;
+}
+
+.report-adventure .adventure-notebook-bookmark {
+    top: 1%;
+    right: 9%;
+    width: var(--bookmark-width);
+    height: auto;
+}
+
+.report-adventure .adventure-notebook-tabs {
+    top: 26%;
+    right: 0;
+    display: grid;
+    gap: calc(12px * var(--notebook-scale));
+    width: var(--tab-width);
+}
+
+.report-adventure .report-intro {
+    display: block;
+    margin: 0 0 16px;
+}
+
+.report-adventure .report-intro-content {
+    padding: 0;
+    background: transparent;
+    border-radius: 0;
+}
+
+.report-adventure .notebook-title {
+    margin: 0 0 4px;
+    font-size: clamp(24px, 2.5vw, 30px);
+    line-height: 1.3;
+    color: #512e19;
+}
+
+.report-adventure .report-period {
+    margin: 0;
+    font-size: clamp(15px, 1.7vw, 18px);
+    color: #50341f;
+}
+
+.report-adventure .report-nav {
+    margin-top: 8px;
+    gap: 6px 10px;
+}
+
+.report-adventure .report-nav a {
+    display: inline-block;
+    padding: 3px 8px;
+    border: 1px solid #9b6b39;
+    border-radius: 4px;
+    background: rgba(255, 247, 221, .72);
+    color: #452a17;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.report-adventure .report-nav a:hover,
+.report-adventure .report-nav a:focus-visible {
+    color: #842e16;
+    background: #fff1c9;
+}
+
+.report-adventure .adventure-notebook-sections {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.report-adventure .report-section {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    overflow-wrap: anywhere;
+}
+
+.report-adventure .report-section + .report-section {
+    border-left: 1px solid rgba(111, 64, 28, .55);
+    padding-left: 18px;
+}
+
+.report-adventure .report-section h2,
+.report-adventure .report-section h3 {
+    color: #512e19;
+}
+
+.report-adventure .report-stats {
+    gap: 4px 14px;
+}
+
+.report-adventure .report-stats strong {
+    color: #513018;
+}
+
+.report-adventure .report-progress {
+    accent-color: #a65e27;
+}
+
+.report-adventure .report-note {
+    color: #62472d;
+}
+
+.report-adventure .report-categories {
+    grid-template-columns: 1fr;
+}
+
+.report-adventure .report-categories li {
+    border-bottom-color: rgba(111, 64, 28, .38);
+}
+
+@media (min-width: 720px) {
+    .container.report-adventure {
+        display: grid;
+        place-items: center;
+        height: 100dvh;
+        min-height: 0;
+        padding: 96px 24px 24px;
+    }
+
+    .report-adventure .adventure-notebook {
+        height: min(640px, 100%);
+    }
+}
+
+@media (max-width: 719px) {
+    .report-adventure .game-clock {
+        position: absolute;
+        top: 16px;
+        right: 12px;
+    }
+
+    .container.report-adventure {
+        min-height: 100dvh;
+        padding: 96px 8px 210px;
+    }
+
+    .report-adventure {
+        --notebook-scale: .28;
+    }
+
+    .report-adventure .adventure-notebook {
+        height: auto;
+    }
+
+    .report-adventure .adventure-notebook-scroll {
+        height: auto;
+        overflow: visible;
+        padding: 16px calc(var(--tab-width) * .62 + 10px) 18px
+                 calc(var(--ring-width) * .65 + 10px);
+    }
+
+    .report-adventure .adventure-notebook-sections {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .report-adventure .report-section + .report-section {
+        border-left: 0;
+        border-top: 1px solid rgba(111, 64, 28, .55);
+        padding: 14px 0 0;
+    }
+
+    .report-adventure .report-stats strong {
+        font-size: 20px;
+    }
+}

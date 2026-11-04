@@ -5,15 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>登録の確認</title>
     <script src="/js/background-theme.js"></script>
-    <script src="/js/customization/catalog.js?v=2"></script>
+    <script src="/js/customization/catalog.js?v=3"></script>
     <script src="/js/customization/storage.js?v=1"></script>
     <script src="/js/customization/apply.js?v=1"></script>
-    <link rel="stylesheet" href="/css/style.css?v=appearance-3">
-    <script src="/js/pet-drag.js?v=pet-grab-3" defer></script>
+    <link rel="stylesheet" href="/css/style.css?v=appearance-5">
+    <link rel="stylesheet" href="/css/todo-quest.css?v=3">
+    <script src="/js/pet-drag.js?v=pet-actions-1" defer></script>
 </head>
 <body>
-    <main class="container">
-        <h1 class="page-title">登録の確認</h1>
+    <main class="container quest-page">
+      <div class="quest-board quest-board--confirm">
+        <div class="quest-paper">
         <p class="confirm-value">やること：<span th:text="${#strings.isEmpty(todo.title) ? '（入力なし）' : todo.title}">（入力なし）</span></p>
         <p class="confirm-value">メモ：<span th:text="${#strings.isEmpty(todo.detail) ? '（入力なし）' : todo.detail}">（入力なし）</span></p>
         <p class="confirm-value">ジャンル：<span th:text="${#strings.isEmpty(todo.category) ? '（入力なし）' : todo.category}">（入力なし）</span></p>
@@ -30,6 +32,11 @@
                 <button class="btn sub" type="submit" formaction="/todos/new">書き直す</button>
             </div>
         </form>
+        </div>
+        <h1 class="quest-title">登録の確認</h1>
+        <img class="quest-clip" src="/assets/todos/themes/quest/clip.png" alt="" aria-hidden="true">
+        <img class="quest-seal" src="/assets/todos/themes/quest/seal.png" alt="" aria-hidden="true">
+      </div>
     </main>
     <div class="idle-pet" role="img" aria-label="メカ祥子が待機している"></div>
 </body>

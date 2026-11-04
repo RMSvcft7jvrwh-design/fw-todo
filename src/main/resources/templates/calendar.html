@@ -5,82 +5,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>カレンダー</title>
     <script src="/js/background-theme.js"></script>
-    <script src="/js/customization/catalog.js?v=2"></script>
+    <script src="/js/customization/catalog.js?v=3"></script>
     <script src="/js/customization/storage.js?v=1"></script>
     <script src="/js/customization/apply.js?v=1"></script>
-    <link rel="stylesheet" href="/css/style.css?v=appearance-3">
+    <link rel="stylesheet" href="/css/style.css?v=calendar-wood-1">
+    <link rel="stylesheet" href="/css/calendar-wood.css?v=9">
     <script th:if="${isWeek}" src="/js/game-clock.js" defer></script>
-    <script src="/js/calendar-pet.js?v=pet-catalog-2" defer></script>
-    <script src="/js/pet-drag.js?v=pet-grab-3" defer></script>
+    <script src="/js/pet-drag.js?v=pet-actions-1" defer></script>
 </head>
 <body>
-    <main class="container" th:classappend="${isWeek} ? 'clock-page'">
+    <main class="container calendar-wood" th:classappend="${isWeek} ? 'clock-page'">
         <time class="game-clock" th:if="${isWeek}">
             <span class="game-clock-date">日本時間</span>
             <span class="game-clock-time">--:--:--</span>
         </time>
-        <h1 class="page-title" th:if="${isWeek}" th:text="|${firstDay.year}/${#numbers.formatInteger(firstDay.monthValue, 2)}/${#numbers.formatInteger(firstDay.dayOfMonth, 2)}〜${lastDay.year}/${#numbers.formatInteger(lastDay.monthValue, 2)}/${#numbers.formatInteger(lastDay.dayOfMonth, 2)}|">2026/10/25〜2026/10/31</h1>
-        <h1 class="page-title" th:unless="${isWeek}" th:text="|${year}/${#numbers.formatInteger(month, 2)}|">2026/10</h1>
-        <nav class="calendar-nav" aria-label="カレンダーの操作">
-            <div class="calendar-nav-group">
-                <a th:if="${isWeek}" th:href="@{/calendar(view='week',from=${previousWeek})}">前の週</a>
-                <a th:if="${isWeek}" th:href="@{/calendar(view='week',from=${nextWeek})}">次の週</a>
-                <a th:unless="${isWeek}" th:href="@{/calendar(year=${previousYear},month=${previousMonth})}">前の月</a>
-                <a th:unless="${isWeek}" th:href="@{/calendar(year=${nextYear},month=${nextMonth})}">次の月</a>
-                <a th:href="${isWeek} ? @{/calendar(view='week',from=${todayWeekStart})} : @{/calendar}">今日へ</a>
+        <section class="calendar-board" aria-label="カレンダー">
+            <div class="calendar-board-inner">
+            <header class="calendar-board-header">
+                <h1 class="calendar-board-title">カレンダー</h1>
+                <p class="calendar-board-period" th:if="${isWeek}" th:text="|${firstDay.year}/${#numbers.formatInteger(firstDay.monthValue, 2)}/${#numbers.formatInteger(firstDay.dayOfMonth, 2)}〜${lastDay.year}/${#numbers.formatInteger(lastDay.monthValue, 2)}/${#numbers.formatInteger(lastDay.dayOfMonth, 2)}|">2026/10/25〜2026/10/31</p>
+                <p class="calendar-board-period" th:unless="${isWeek}" th:text="|${year}/${#numbers.formatInteger(month, 2)}|">2026/10</p>
+            </header>
+            <div class="calendar-toolbar-scroll" role="region" aria-label="カレンダー操作の横スクロール" tabindex="0">
+            <nav class="calendar-nav" aria-label="カレンダーの操作">
+                <div class="calendar-nav-group">
+                    <a th:if="${isWeek}" th:href="@{/calendar(view='week',from=${previousWeek})}">前の週</a>
+                    <a th:if="${isWeek}" th:href="@{/calendar(view='week',from=${nextWeek})}">次の週</a>
+                    <a th:unless="${isWeek}" th:href="@{/calendar(year=${previousYear},month=${previousMonth})}">前の月</a>
+                    <a th:unless="${isWeek}" th:href="@{/calendar(year=${nextYear},month=${nextMonth})}">次の月</a>
+                    <a th:href="${isWeek} ? @{/calendar(view='week',from=${todayWeekStart})} : @{/calendar}">今日へ</a>
+                </div>
+                <div class="calendar-view-tabs" role="group" aria-label="表示切り替え">
+                    <a class="calendar-view-tab" th:classappend="${!isWeek} ? 'is-active'"
+                       th:href="@{/calendar(year=${year},month=${month})}"
+                       th:attr="aria-current=${!isWeek ? 'page' : null}">月間</a>
+                    <a class="calendar-view-tab" th:classappend="${isWeek} ? 'is-active'"
+                       th:href="@{/calendar(view='week',from=${weekFrom})}"
+                       th:attr="aria-current=${isWeek ? 'page' : null}">週間</a>
+                </div>
+                <div class="calendar-nav-group">
+                    <a th:if="${isWeek}" th:href="@{/reports/weekly(from=${firstDay})}">この週のレポート</a>
+                    <a href="/todos">表で見る</a>
+                    <a href="/todos/new">新規登録</a>
+                </div>
+            </nav>
             </div>
-            <div class="calendar-view-tabs" role="group" aria-label="表示切り替え">
-                <a class="calendar-view-tab" th:classappend="${!isWeek} ? 'is-active'"
-                   th:href="@{/calendar(year=${year},month=${month})}"
-                   th:attr="aria-current=${!isWeek ? 'page' : null}">月間</a>
-                <a class="calendar-view-tab" th:classappend="${isWeek} ? 'is-active'"
-                   th:href="@{/calendar(view='week',from=${weekFrom})}"
-                   th:attr="aria-current=${isWeek ? 'page' : null}">週間</a>
+            <div class="calendar-paper">
+                <div class="calendar-scroll">
+                    <table class="calendar-table" th:classappend="${isWeek} ? 'calendar-table-week'" th:attr="data-from=${firstDay},data-to=${lastDay},data-today=${today},data-view=${isWeek ? 'week' : 'month'}">
+                        <thead th:unless="${isWeek}">
+                            <tr>
+                                <th scope="col">日</th>
+                                <th scope="col">月</th>
+                                <th scope="col">火</th>
+                                <th scope="col">水</th>
+                                <th scope="col">木</th>
+                                <th scope="col">金</th>
+                                <th scope="col">土</th>
+                            </tr>
+                        </thead>
+                        <tbody th:unless="${isWeek}">
+                            <tr th:each="week : ${weeks}">
+                                <th:block th:each="date : ${week}">
+                                    <td th:if="${date != null}" th:classappend="${date.equals(today)} ? 'calendar-today'" th:attr="data-date=${date}">
+                                        <div class="calendar-cell-content">
+                                            <span th:text="${date.dayOfMonth}"></span><span class="calendar-today-badge" th:if="${date.equals(today)}">今日</span>
+                                        </div>
+                                    </td>
+                                    <td th:unless="${date != null}" class="calendar-empty"></td>
+                                </th:block>
+                            </tr>
+                        </tbody>
+                        <tbody th:if="${isWeek}">
+                            <tr th:each="date, day : ${weeks[0]}" th:classappend="${date.equals(today)} ? 'calendar-today'" th:attr="data-date=${date}">
+                                <th scope="row">
+                                    <time th:datetime="${date}" th:text="|${date.monthValue}月${date.dayOfMonth}日（${weekdayNames[day.index]}）|">日付</time>
+                                </th>
+                                <td>
+                                    <div class="calendar-cell-content"></div>
+                                    <span class="calendar-today-badge" th:if="${date.equals(today)}">今日</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="calendar-nav-group">
-                <a th:if="${isWeek}" th:href="@{/reports/weekly(from=${firstDay})}">この週のレポート</a>
-                <a href="/todos">表で見る</a>
-                <a href="/todos/new">新規登録</a>
             </div>
-        </nav>
-        <div class="calendar-scroll">
-            <table class="calendar-table" th:classappend="${isWeek} ? 'calendar-table-week'" th:attr="data-from=${firstDay},data-to=${lastDay},data-today=${today},data-view=${isWeek ? 'week' : 'month'}">
-                <thead th:unless="${isWeek}">
-                    <tr>
-                        <th scope="col">日</th>
-                        <th scope="col">月</th>
-                        <th scope="col">火</th>
-                        <th scope="col">水</th>
-                        <th scope="col">木</th>
-                        <th scope="col">金</th>
-                        <th scope="col">土</th>
-                    </tr>
-                </thead>
-                <tbody th:unless="${isWeek}">
-                    <tr th:each="week : ${weeks}">
-                        <th:block th:each="date : ${week}">
-                            <td th:if="${date != null}" th:classappend="${date.equals(today)} ? 'calendar-today'" th:attr="data-date=${date}">
-                                <div class="calendar-cell-content">
-                                    <span th:text="${date.dayOfMonth}"></span><span class="calendar-today-badge" th:if="${date.equals(today)}">今日</span>
-                                </div>
-                            </td>
-                            <td th:unless="${date != null}" class="calendar-empty"></td>
-                        </th:block>
-                    </tr>
-                </tbody>
-                <tbody th:if="${isWeek}">
-                    <tr th:each="date, day : ${weeks[0]}" th:classappend="${date.equals(today)} ? 'calendar-today'" th:attr="data-date=${date}">
-                        <th scope="row">
-                            <time th:datetime="${date}" th:text="|${date.monthValue}月${date.dayOfMonth}日（${weekdayNames[day.index]}）|">日付</time>
-                        </th>
-                        <td>
-                            <div class="calendar-cell-content"></div>
-                            <span class="calendar-today-badge" th:if="${date.equals(today)}">今日</span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        </section>
     </main>
     <div class="calendar-pet-track" role="img" aria-label="メカ祥子が草地を歩き回る">
         <div class="calendar-pet" aria-hidden="true"></div>
@@ -197,61 +208,33 @@
             }
         }
 
-        function fitWeekCalendar() {
-            const table = document.querySelector('.calendar-table-week');
-            if (!table) {
-                return;
-            }
-
-            const contents = [...table.querySelectorAll('tbody .calendar-cell-content')];
-            for (const content of contents) {
-                content.style.removeProperty('max-height');
-            }
-            if (window.innerWidth < 720) {
-                return;
-            }
-
+        function fitCalendarRows() {
+            const table = document.querySelector('.calendar-table');
             const scrollArea = table.closest('.calendar-scroll');
-            const tableTop = scrollArea.getBoundingClientRect().top + window.scrollY;
-            const availableHeight = window.innerHeight - tableTop - 24;
-            if (table.getBoundingClientRect().height <= availableHeight) {
+            if (window.innerWidth <= 600) {
+                table.style.removeProperty('--calendar-row-height');
                 return;
             }
 
-            function setContentLimit(height) {
-                for (const content of contents) {
-                    content.style.maxHeight = `${height}px`;
-                }
-            }
-
-            let lowest = 32;
-            let highest = Math.max(lowest, ...contents.map(content => content.scrollHeight));
-            setContentLimit(lowest);
-            if (table.getBoundingClientRect().height > availableHeight) {
-                return;
-            }
-
-            while (lowest < highest) {
-                const middle = Math.ceil((lowest + highest) / 2);
-                setContentLimit(middle);
-                if (table.getBoundingClientRect().height <= availableHeight) {
-                    lowest = middle;
-                } else {
-                    highest = middle - 1;
-                }
-            }
-            setContentLimit(lowest);
+            const rows = table.tBodies[0].rows.length;
+            const headingHeight = table.tHead ? table.tHead.getBoundingClientRect().height : 0;
+            const availableHeight = scrollArea.clientHeight - headingHeight - 4;
+            table.style.setProperty('--calendar-row-height', `${Math.max(35, Math.floor(availableHeight / rows))}px`);
         }
 
         let fitFrame;
-        function scheduleWeekCalendarFit() {
+        function scheduleCalendarFit() {
             window.cancelAnimationFrame(fitFrame);
-            fitFrame = window.requestAnimationFrame(fitWeekCalendar);
+            fitFrame = window.requestAnimationFrame(fitCalendarRows);
         }
 
-        loadTodos().then(scheduleWeekCalendarFit);
-        loadHolidays().then(scheduleWeekCalendarFit);
-        window.addEventListener('resize', scheduleWeekCalendarFit);
+        const calendarScroll = document.querySelector('.calendar-scroll');
+        if (window.ResizeObserver) {
+            new ResizeObserver(scheduleCalendarFit).observe(calendarScroll);
+        }
+        loadTodos().then(scheduleCalendarFit);
+        loadHolidays().then(scheduleCalendarFit);
+        window.addEventListener('resize', scheduleCalendarFit);
     </script>
 </body>
 </html>

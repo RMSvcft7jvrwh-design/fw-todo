@@ -5,23 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>週間レポート</title>
     <script src="/js/background-theme.js"></script>
-    <script src="/js/customization/catalog.js?v=2"></script>
+    <script src="/js/customization/catalog.js?v=3"></script>
     <script src="/js/customization/storage.js?v=1"></script>
     <script src="/js/customization/apply.js?v=1"></script>
-    <link rel="stylesheet" href="/css/style.css?v=appearance-3">
+    <link rel="stylesheet" href="/css/style.css?v=appearance-5">
+    <link rel="stylesheet" href="/css/weekly-report-adventure.css?v=5">
     <script src="/js/game-clock.js" defer></script>
-    <script src="/js/calendar-pet.js?v=pet-catalog-2" defer></script>
-    <script src="/js/pet-drag.js?v=pet-grab-3" defer></script>
+    <script src="/js/pet-drag.js?v=pet-actions-1" defer></script>
 </head>
 <body>
-    <main class="container clock-page">
+    <main class="container clock-page report-adventure">
         <time class="game-clock">
             <span class="game-clock-date">日本時間</span>
             <span class="game-clock-time">--:--:--</span>
         </time>
-        <div class="report-intro">
+        <div class="adventure-notebook">
+          <div class="adventure-notebook-paper">
+            <div class="adventure-notebook-scroll">
+        <header class="report-intro">
             <div class="report-intro-content">
-                <h1 class="page-title">週間レポート</h1>
+                <h1 class="notebook-title">週間レポート</h1>
                 <p class="report-period" th:text="|${#temporals.format(weekStart, 'yyyy年M月d日')}～${#temporals.format(weekEnd, 'yyyy年M月d日')}（日～土）|">対象期間</p>
                 <nav class="report-nav" aria-label="レポートの週移動">
                     <a class="link" th:href="@{/reports/weekly(from=${previousWeek})}">前の週</a>
@@ -30,10 +33,9 @@
                     <a class="link" th:href="@{/calendar(view='week',from=${weekStart})}">週間カレンダーへ</a>
                 </nav>
             </div>
-            <div class="report-pet-track" role="img" aria-label="メカ祥子が時々左右に歩く">
-                <div class="report-pet" aria-hidden="true"></div>
-            </div>
-        </div>
+        </header>
+
+        <div class="adventure-notebook-sections">
 
         <section class="report-section" aria-labelledby="due-heading">
             <h2 id="due-heading">この週が期限のTodo</h2>
@@ -63,6 +65,27 @@
                 <li th:each="entry : ${completedCategoryCounts}"><span th:text="${entry.key}">ジャンル</span><strong th:text="|${entry.value}件|">0件</strong></li>
             </ul>
         </section>
+        </div>
+            </div>
+          </div>
+          <div class="adventure-notebook-rings" aria-hidden="true">
+              <img src="/assets/reports/themes/adventure/binder-ring.png" alt="">
+              <img src="/assets/reports/themes/adventure/binder-ring.png" alt="">
+              <img src="/assets/reports/themes/adventure/binder-ring.png" alt="">
+              <img src="/assets/reports/themes/adventure/binder-ring.png" alt="">
+              <img src="/assets/reports/themes/adventure/binder-ring.png" alt="">
+              <img src="/assets/reports/themes/adventure/binder-ring.png" alt="">
+          </div>
+          <img class="adventure-notebook-bookmark" src="/assets/reports/themes/adventure/bookmark-navy.png" alt="" aria-hidden="true">
+          <div class="adventure-notebook-tabs" aria-hidden="true">
+              <img src="/assets/reports/themes/adventure/tab-amber.png" alt="">
+              <img src="/assets/reports/themes/adventure/tab-olive.png" alt="">
+              <img src="/assets/reports/themes/adventure/tab-rose.png" alt="">
+          </div>
+        </div>
     </main>
+    <div class="report-pet-track" role="img" aria-label="メカ祥子が時々左右に歩く">
+        <div class="report-pet" aria-hidden="true"></div>
+    </div>
 </body>
 </html>

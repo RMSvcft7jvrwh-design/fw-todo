@@ -113,6 +113,7 @@
 
         if (pet.offsetTop >= floor && speedX === 0 && speedY === 0) {
             stopFlight();
+            pet.dispatchEvent(new Event('pet:landed'));
         } else {
             flightFrame = window.requestAnimationFrame(fly);
         }
@@ -123,6 +124,7 @@
         if (pet.offsetTop > groundTop()) place(pet.offsetLeft, groundTop());
         if (reducedMotion.matches || (pet.offsetTop >= groundTop() && horizontalSpeed === 0 && verticalSpeed >= 0)) {
             place(pet.offsetLeft, groundTop());
+            pet.dispatchEvent(new Event('pet:landed'));
         } else {
             speedX = Math.max(-maxThrowSpeed, Math.min(horizontalSpeed, maxThrowSpeed));
             speedY = Math.max(-maxThrowSpeed, Math.min(verticalSpeed, maxThrowSpeed));
@@ -212,4 +214,120 @@
     reducedMotion.addEventListener('change', () => {
         if (pet.classList.contains('is-placed') && pointerId === null) startFlight();
     });
+})();
+
+// One complete sheet action is played before choosing the next one.
+(() => {
+    const pet = document.querySelector('.calendar-pet, .report-pet, .idle-pet');
+    if (!pet) return;
+    const group = window.AppearanceCatalog?.pet;
+    const choice = group?.choices.find(item => item.id === window.AppearanceSettings.get().pet);
+    const sprite = choice?.sprite;
+    if (!sprite?.actions) return;
+
+    const track = pet.parentElement.matches('.calendar-pet-track, .report-pet-track') ? pet.parentElement : null;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let x = track ? Math.max(0, track.clientWidth - sprite.viewport.width) : pet.getBoundingClientRect().left;
+    let direction = -1;
+    let action;
+    let frameIndex = 0;
+    let frameElapsed = 0;
+    let lastTime = 0;
+    let requestId;
+    let suspended = false;
+    let previousSpecial;
+
+    if (track) pet.style.transform = `translateX(${x}px)`;
+
+    function limit() {
+        return Math.max(0, (track && !pet.classList.contains('is-placed') ? track.clientWidth : window.innerWidth) - sprite.viewport.width);
+    }
+
+    function setX(value) {
+        x = Math.max(0, Math.min(value, limit()));
+        if (track && !pet.classList.contains('is-placed')) pet.style.transform = `translateX(${x}px)`;
+        else {
+            pet.style.right = 'auto';
+            pet.style.left = `${x}px`;
+        }
+    }
+
+    function framesFor(item) {
+        return item.id === 'walk' ? sprite.frames.walk[direction > 0 ? 'right' : 'left'] : sprite.frames[item.id];
+    }
+
+    function showFrame() {
+        const [sourceX, sourceY, width, height] = framesFor(action)[frameIndex];
+        const offsetX = Math.floor((sprite.viewport.width - width) / 2);
+        pet.style.backgroundPosition = `${offsetX - sourceX}px ${sprite.viewport.height - height - sourceY}px`;
+    }
+
+    function chooseAction() {
+        const candidates = sprite.actions.filter(item => item.id === 'idle' || item.id === 'walk' || item.id !== previousSpecial);
+        const total = candidates.reduce((sum, item) => sum + item.weight, 0);
+        let ticket = Math.random() * total;
+        const chosen = candidates.find(item => (ticket -= item.weight) < 0) || candidates.at(-1);
+        previousSpecial = chosen.id === 'idle' || chosen.id === 'walk' ? undefined : chosen.id;
+        if (chosen.id === 'walk') {
+            if (x <= 0) direction = 1;
+            else if (x >= limit()) direction = -1;
+        }
+        action = chosen;
+        frameIndex = 0;
+        frameElapsed = 0;
+        showFrame();
+    }
+
+    function tick(now) {
+        if (suspended || reducedMotion.matches) return;
+        if (!lastTime) lastTime = now;
+        const elapsed = Math.min(now - lastTime, 50);
+        lastTime = now;
+        if (action.id === 'walk') setX(x + direction * action.speed * elapsed / 1000);
+        frameElapsed += elapsed;
+        if (frameElapsed >= action.frameMs) {
+            frameElapsed -= action.frameMs;
+            if (frameIndex + 1 < framesFor(action).length) {
+                frameIndex++;
+                showFrame();
+            } else {
+                chooseAction();
+            }
+        }
+        requestId = window.requestAnimationFrame(tick);
+    }
+
+    function stop() {
+        suspended = true;
+        if (requestId !== undefined) window.cancelAnimationFrame(requestId);
+        requestId = undefined;
+        pet.classList.remove('is-animating');
+        pet.style.removeProperty('background-position');
+        lastTime = 0;
+    }
+
+    function start() {
+        if (pet.classList.contains('is-dragging')) return;
+        if (requestId !== undefined) window.cancelAnimationFrame(requestId);
+        requestId = undefined;
+        suspended = false;
+        if (pet.classList.contains('is-placed')) x = pet.getBoundingClientRect().left;
+        setX(x);
+        pet.classList.add('is-animating');
+        if (reducedMotion.matches) {
+            action = sprite.actions.find(item => item.id === 'idle');
+            frameIndex = 0;
+            showFrame();
+            return;
+        }
+        chooseAction();
+        lastTime = 0;
+        requestId = window.requestAnimationFrame(tick);
+    }
+
+    pet.addEventListener('pet:pickup', stop);
+    pet.addEventListener('pet:landed', start);
+    window.addEventListener('resize', () => setX(pet.classList.contains('is-placed') ? pet.getBoundingClientRect().left : x));
+    reducedMotion.addEventListener('change', () => { stop(); start(); });
+    start();
 })();
