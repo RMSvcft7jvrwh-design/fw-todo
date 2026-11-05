@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>カレンダー</title>
     <script src="/js/background-theme.js"></script>
-    <script src="/js/customization/catalog.js?v=3"></script>
+    <script src="/js/customization/catalog.js?v=4"></script>
     <script src="/js/customization/storage.js?v=1"></script>
-    <script src="/js/customization/apply.js?v=1"></script>
-    <link rel="stylesheet" href="/css/style.css?v=calendar-wood-1">
+    <script src="/js/customization/apply.js?v=2"></script>
+    <link rel="stylesheet" href="/css/style.css?v=calendar-wood-2">
     <link rel="stylesheet" href="/css/calendar-wood.css?v=9">
+    <link rel="stylesheet" href="/css/shared-rpg-buttons.css?v=2">
     <script th:if="${isWeek}" src="/js/game-clock.js" defer></script>
-    <script src="/js/pet-drag.js?v=pet-actions-1" defer></script>
+    <script src="/js/pet-drag.js?v=pet-actions-2" defer></script>
 </head>
 <body>
     <main class="container calendar-wood" th:classappend="${isWeek} ? 'clock-page'">
@@ -44,9 +45,9 @@
                        th:attr="aria-current=${isWeek ? 'page' : null}">週間</a>
                 </div>
                 <div class="calendar-nav-group">
-                    <a th:if="${isWeek}" th:href="@{/reports/weekly(from=${firstDay})}">この週のレポート</a>
-                    <a href="/todos">表で見る</a>
-                    <a href="/todos/new">新規登録</a>
+                    <a class="rpg-image-button rpg-image-button--weekly-report" th:if="${isWeek}" th:href="@{/reports/weekly(from=${firstDay})}" aria-label="この週のレポート">この週のレポート</a>
+                    <a class="rpg-image-button rpg-image-button--list" href="/todos" aria-label="やること一覧へ">一覧へ</a>
+                    <a class="rpg-image-button rpg-image-button--create" href="/todos/new" aria-label="新規登録へ">新規登録</a>
                 </div>
             </nav>
             </div>

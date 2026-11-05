@@ -1,0 +1,627 @@
+{
+  "name": "わたげちゃん",
+  "format": "transparent-png-sprites",
+  "frameSize": {
+    "width": 256,
+    "height": 320
+  },
+  "sourceWidth": 1536,
+  "sourceHeight": 1024,
+  "note": "原画表記は51コマだが実際に存在する猫の絵は48コマ。欠けた3コマは水増ししていない。",
+  "atlas": {
+    "path": "assets/sheets/all_48_8x6.png",
+    "columns": 8,
+    "rows": 6
+  },
+  "animations": {
+    "idle": {
+      "label": "おすわり",
+      "loop": true,
+      "sheet": "assets/sheets/idle.png",
+      "count": 4,
+      "frames": [
+        {
+          "path": "assets/frames/idle_00.png",
+          "durationMs": 680,
+          "atlasIndex": 0,
+          "sourceBounds": [
+            128,
+            38,
+            100,
+            117
+          ]
+        },
+        {
+          "path": "assets/frames/idle_01.png",
+          "durationMs": 820,
+          "atlasIndex": 1,
+          "sourceBounds": [
+            240,
+            38,
+            103,
+            117
+          ]
+        },
+        {
+          "path": "assets/frames/idle_02.png",
+          "durationMs": 520,
+          "atlasIndex": 2,
+          "sourceBounds": [
+            358,
+            38,
+            105,
+            117
+          ]
+        },
+        {
+          "path": "assets/frames/idle_03.png",
+          "durationMs": 800,
+          "atlasIndex": 3,
+          "sourceBounds": [
+            475,
+            38,
+            101,
+            117
+          ]
+        }
+      ]
+    },
+    "look": {
+      "label": "キョロキョロ",
+      "loop": true,
+      "sheet": "assets/sheets/look.png",
+      "count": 5,
+      "frames": [
+        {
+          "path": "assets/frames/look_00.png",
+          "durationMs": 400,
+          "atlasIndex": 4,
+          "sourceBounds": [
+            722,
+            40,
+            105,
+            117
+          ]
+        },
+        {
+          "path": "assets/frames/look_01.png",
+          "durationMs": 460,
+          "atlasIndex": 5,
+          "sourceBounds": [
+            834,
+            38,
+            104,
+            119
+          ]
+        },
+        {
+          "path": "assets/frames/look_02.png",
+          "durationMs": 400,
+          "atlasIndex": 6,
+          "sourceBounds": [
+            949,
+            37,
+            102,
+            120
+          ]
+        },
+        {
+          "path": "assets/frames/look_03.png",
+          "durationMs": 480,
+          "atlasIndex": 7,
+          "sourceBounds": [
+            1063,
+            33,
+            98,
+            124
+          ]
+        },
+        {
+          "path": "assets/frames/look_04.png",
+          "durationMs": 500,
+          "atlasIndex": 8,
+          "sourceBounds": [
+            1171,
+            39,
+            105,
+            116
+          ]
+        }
+      ]
+    },
+    "walk": {
+      "label": "ウロウロ",
+      "loop": true,
+      "sheet": "assets/sheets/walk.png",
+      "count": 7,
+      "frames": [
+        {
+          "path": "assets/frames/walk_00.png",
+          "durationMs": 130,
+          "atlasIndex": 9,
+          "sourceBounds": [
+            144,
+            192,
+            157,
+            95
+          ]
+        },
+        {
+          "path": "assets/frames/walk_01.png",
+          "durationMs": 130,
+          "atlasIndex": 10,
+          "sourceBounds": [
+            313,
+            201,
+            144,
+            87
+          ]
+        },
+        {
+          "path": "assets/frames/walk_02.png",
+          "durationMs": 130,
+          "atlasIndex": 11,
+          "sourceBounds": [
+            472,
+            196,
+            142,
+            91
+          ]
+        },
+        {
+          "path": "assets/frames/walk_03.png",
+          "durationMs": 130,
+          "atlasIndex": 12,
+          "sourceBounds": [
+            625,
+            203,
+            146,
+            84
+          ]
+        },
+        {
+          "path": "assets/frames/walk_04.png",
+          "durationMs": 130,
+          "atlasIndex": 13,
+          "sourceBounds": [
+            782,
+            203,
+            152,
+            84
+          ]
+        },
+        {
+          "path": "assets/frames/walk_05.png",
+          "durationMs": 130,
+          "atlasIndex": 14,
+          "sourceBounds": [
+            950,
+            195,
+            157,
+            92
+          ]
+        },
+        {
+          "path": "assets/frames/walk_06.png",
+          "durationMs": 130,
+          "atlasIndex": 15,
+          "sourceBounds": [
+            1123,
+            198,
+            166,
+            89
+          ]
+        }
+      ]
+    },
+    "groom": {
+      "label": "毛づくろい",
+      "loop": true,
+      "sheet": "assets/sheets/groom.png",
+      "count": 5,
+      "frames": [
+        {
+          "path": "assets/frames/groom_00.png",
+          "durationMs": 300,
+          "atlasIndex": 16,
+          "sourceBounds": [
+            137,
+            329,
+            92,
+            113
+          ]
+        },
+        {
+          "path": "assets/frames/groom_01.png",
+          "durationMs": 300,
+          "atlasIndex": 17,
+          "sourceBounds": [
+            239,
+            330,
+            91,
+            112
+          ]
+        },
+        {
+          "path": "assets/frames/groom_02.png",
+          "durationMs": 300,
+          "atlasIndex": 18,
+          "sourceBounds": [
+            340,
+            330,
+            89,
+            112
+          ]
+        },
+        {
+          "path": "assets/frames/groom_03.png",
+          "durationMs": 300,
+          "atlasIndex": 19,
+          "sourceBounds": [
+            444,
+            336,
+            94,
+            106
+          ]
+        },
+        {
+          "path": "assets/frames/groom_04.png",
+          "durationMs": 300,
+          "atlasIndex": 20,
+          "sourceBounds": [
+            546,
+            330,
+            93,
+            112
+          ]
+        }
+      ]
+    },
+    "curl": {
+      "label": "丸まる",
+      "loop": false,
+      "sheet": "assets/sheets/curl.png",
+      "count": 5,
+      "frames": [
+        {
+          "path": "assets/frames/curl_00.png",
+          "durationMs": 250,
+          "atlasIndex": 21,
+          "sourceBounds": [
+            782,
+            330,
+            99,
+            112
+          ]
+        },
+        {
+          "path": "assets/frames/curl_01.png",
+          "durationMs": 250,
+          "atlasIndex": 22,
+          "sourceBounds": [
+            892,
+            352,
+            98,
+            86
+          ]
+        },
+        {
+          "path": "assets/frames/curl_02.png",
+          "durationMs": 250,
+          "atlasIndex": 23,
+          "sourceBounds": [
+            996,
+            358,
+            99,
+            80
+          ]
+        },
+        {
+          "path": "assets/frames/curl_03.png",
+          "durationMs": 250,
+          "atlasIndex": 24,
+          "sourceBounds": [
+            1103,
+            361,
+            95,
+            80
+          ]
+        },
+        {
+          "path": "assets/frames/curl_04.png",
+          "durationMs": 250,
+          "atlasIndex": 25,
+          "sourceBounds": [
+            1206,
+            361,
+            99,
+            80
+          ]
+        }
+      ]
+    },
+    "sleep": {
+      "label": "すやすや",
+      "loop": true,
+      "sheet": "assets/sheets/sleep.png",
+      "count": 4,
+      "frames": [
+        {
+          "path": "assets/frames/sleep_00.png",
+          "durationMs": 900,
+          "atlasIndex": 26,
+          "sourceBounds": [
+            151,
+            514,
+            103,
+            79
+          ]
+        },
+        {
+          "path": "assets/frames/sleep_01.png",
+          "durationMs": 850,
+          "atlasIndex": 27,
+          "sourceBounds": [
+            261,
+            514,
+            105,
+            79
+          ]
+        },
+        {
+          "path": "assets/frames/sleep_02.png",
+          "durationMs": 950,
+          "atlasIndex": 28,
+          "sourceBounds": [
+            377,
+            514,
+            105,
+            79
+          ]
+        },
+        {
+          "path": "assets/frames/sleep_03.png",
+          "durationMs": 850,
+          "atlasIndex": 29,
+          "sourceBounds": [
+            493,
+            516,
+            105,
+            77
+          ]
+        }
+      ]
+    },
+    "stretch": {
+      "label": "起床・伸び",
+      "loop": false,
+      "sheet": "assets/sheets/stretch.png",
+      "count": 5,
+      "frames": [
+        {
+          "path": "assets/frames/stretch_00.png",
+          "durationMs": 350,
+          "atlasIndex": 30,
+          "sourceBounds": [
+            762,
+            508,
+            101,
+            83
+          ]
+        },
+        {
+          "path": "assets/frames/stretch_01.png",
+          "durationMs": 350,
+          "atlasIndex": 31,
+          "sourceBounds": [
+            869,
+            508,
+            103,
+            84
+          ]
+        },
+        {
+          "path": "assets/frames/stretch_02.png",
+          "durationMs": 350,
+          "atlasIndex": 32,
+          "sourceBounds": [
+            978,
+            480,
+            154,
+            112
+          ]
+        },
+        {
+          "path": "assets/frames/stretch_03.png",
+          "durationMs": 350,
+          "atlasIndex": 33,
+          "sourceBounds": [
+            1113,
+            465,
+            143,
+            129
+          ]
+        },
+        {
+          "path": "assets/frames/stretch_04.png",
+          "durationMs": 350,
+          "atlasIndex": 34,
+          "sourceBounds": [
+            1265,
+            480,
+            121,
+            113
+          ]
+        }
+      ]
+    },
+    "grabbed": {
+      "label": "つかまれ・液体I字",
+      "loop": false,
+      "sheet": "assets/sheets/grabbed.png",
+      "count": 5,
+      "frames": [
+        {
+          "path": "assets/frames/grabbed_00.png",
+          "durationMs": 180,
+          "atlasIndex": 35,
+          "sourceBounds": [
+            163,
+            649,
+            90,
+            148
+          ]
+        },
+        {
+          "path": "assets/frames/grabbed_01.png",
+          "durationMs": 180,
+          "atlasIndex": 36,
+          "sourceBounds": [
+            277,
+            650,
+            79,
+            187
+          ]
+        },
+        {
+          "path": "assets/frames/grabbed_02.png",
+          "durationMs": 250,
+          "atlasIndex": 37,
+          "sourceBounds": [
+            385,
+            622,
+            71,
+            218
+          ]
+        },
+        {
+          "path": "assets/frames/grabbed_03.png",
+          "durationMs": 370,
+          "atlasIndex": 38,
+          "sourceBounds": [
+            488,
+            622,
+            75,
+            218
+          ]
+        },
+        {
+          "path": "assets/frames/grabbed_04.png",
+          "durationMs": 420,
+          "atlasIndex": 39,
+          "sourceBounds": [
+            594,
+            624,
+            75,
+            210
+          ]
+        }
+      ]
+    },
+    "thrown": {
+      "label": "投げられる",
+      "loop": false,
+      "sheet": "assets/sheets/thrown.png",
+      "count": 4,
+      "frames": [
+        {
+          "path": "assets/frames/thrown_00.png",
+          "durationMs": 150,
+          "atlasIndex": 40,
+          "sourceBounds": [
+            854,
+            678,
+            102,
+            114
+          ]
+        },
+        {
+          "path": "assets/frames/thrown_01.png",
+          "durationMs": 150,
+          "atlasIndex": 41,
+          "sourceBounds": [
+            954,
+            678,
+            99,
+            93
+          ]
+        },
+        {
+          "path": "assets/frames/thrown_02.png",
+          "durationMs": 150,
+          "atlasIndex": 42,
+          "sourceBounds": [
+            1061,
+            671,
+            87,
+            119
+          ]
+        },
+        {
+          "path": "assets/frames/thrown_03.png",
+          "durationMs": 150,
+          "atlasIndex": 43,
+          "sourceBounds": [
+            1154,
+            682,
+            108,
+            80
+          ]
+        }
+      ]
+    },
+    "land": {
+      "label": "着地・復帰",
+      "loop": false,
+      "sheet": "assets/sheets/land.png",
+      "count": 4,
+      "frames": [
+        {
+          "path": "assets/frames/land_00.png",
+          "durationMs": 180,
+          "atlasIndex": 44,
+          "sourceBounds": [
+            181,
+            902,
+            153,
+            86
+          ]
+        },
+        {
+          "path": "assets/frames/land_01.png",
+          "durationMs": 170,
+          "atlasIndex": 45,
+          "sourceBounds": [
+            360,
+            902,
+            149,
+            86
+          ]
+        },
+        {
+          "path": "assets/frames/land_02.png",
+          "durationMs": 200,
+          "atlasIndex": 46,
+          "sourceBounds": [
+            535,
+            895,
+            163,
+            93
+          ]
+        },
+        {
+          "path": "assets/frames/land_03.png",
+          "durationMs": 190,
+          "atlasIndex": 47,
+          "sourceBounds": [
+            728,
+            866,
+            146,
+            121
+          ]
+        }
+      ]
+    }
+  },
+  "frameCount": 48
+}

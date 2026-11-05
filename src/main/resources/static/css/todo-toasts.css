@@ -1,0 +1,48 @@
+.todo-toast {
+    position: fixed;
+    z-index: 25;
+    top: 82px;
+    right: 16px;
+    max-width: min(360px, calc(100vw - 32px));
+    margin: 0;
+    border: 2px solid #b88c4d;
+    border-radius: 5px;
+    padding: 8px 12px;
+    background: #f5e7c6;
+    color: #412718;
+    box-shadow: 2px 4px 8px #24100666;
+    pointer-events: none;
+}
+
+.todo-toast[data-toast-kind='saved'],
+.todo-toast[data-toast-kind='deleted'] {
+    width: 220px;
+    height: auto;
+    aspect-ratio: 660 / 174;
+    max-width: calc(100vw - 32px);
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    box-shadow: none;
+}
+
+.todo-toast[data-toast-kind='saved'] {
+    background-image: url('/assets/todos/list/themes/japanese-board/toasts/toast-saved.png');
+}
+
+.todo-toast[data-toast-kind='deleted'] {
+    background-image: url('/assets/todos/list/themes/japanese-board/toasts/toast-deleted.png');
+}
+
+.todo-toast[data-toast-kind='saved'] span,
+.todo-toast[data-toast-kind='deleted'] span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}

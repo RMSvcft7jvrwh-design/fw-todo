@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>削除確認</title>
     <script src="/js/background-theme.js"></script>
-    <script src="/js/customization/catalog.js?v=3"></script>
+    <script src="/js/customization/catalog.js?v=4"></script>
     <script src="/js/customization/storage.js?v=1"></script>
-    <script src="/js/customization/apply.js?v=1"></script>
-    <link rel="stylesheet" href="/css/style.css?v=appearance-5">
+    <script src="/js/customization/apply.js?v=2"></script>
+    <link rel="stylesheet" href="/css/style.css?v=appearance-6">
     <link rel="stylesheet" href="/css/todo-quest.css?v=3">
+    <link rel="stylesheet" href="/css/shared-rpg-buttons.css?v=2">
 </head>
 <body>
     <main class="container quest-page">
@@ -20,8 +21,8 @@
         <p class="confirm-value">期限：<span th:text="${todo.dueDate == null ? '（入力なし）' : todo.dueDate}">（入力なし）</span></p>
         <form th:action="@{/todos/{id}/delete(id=${todo.id})}" method="post">
             <div class="confirm-actions">
-                <button class="btn" type="submit">消す</button>
-                <a class="btn sub" href="/todos">やめる</a>
+                <button class="btn rpg-image-button rpg-image-button--delete" type="submit" aria-label="このTodoを削除する">削除する</button>
+                <a class="btn sub rpg-image-button rpg-image-button--list" href="/todos" aria-label="削除せず一覧へ戻る">一覧へ</a>
             </div>
         </form>
         </div>

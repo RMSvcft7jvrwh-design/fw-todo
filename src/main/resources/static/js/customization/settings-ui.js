@@ -32,6 +32,7 @@
                 body.className = 'settings-option__body';
                 const preview = document.createElement('span');
                 preview.className = `settings-preview ${choice.previewClass || ''}`.trim();
+                if (choice.images?.preview) preview.style.backgroundImage = `url("${choice.images.preview}")`;
                 preview.setAttribute('aria-hidden', 'true');
                 const title = document.createElement('span');
                 title.textContent = choice.label;
@@ -51,12 +52,15 @@
         if (!catalog[input.name]?.choices.some(choice => choice.id === input.value)) return;
         settings.save({ [input.name]: input.value });
         status.textContent = '設定を保存しました。';
+        if (input.name === 'pet') window.location.reload();
     });
 
     document.getElementById('appearance-reset').addEventListener('click', () => {
+        const previousPet = settings.get().pet;
         settings.reset();
         render();
         status.textContent = '初期設定に戻しました。';
+        if (previousPet !== settings.get().pet) window.location.reload();
     });
 
     render();

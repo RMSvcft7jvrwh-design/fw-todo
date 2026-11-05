@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>登録の確認</title>
     <script src="/js/background-theme.js"></script>
-    <script src="/js/customization/catalog.js?v=3"></script>
+    <script src="/js/customization/catalog.js?v=4"></script>
     <script src="/js/customization/storage.js?v=1"></script>
-    <script src="/js/customization/apply.js?v=1"></script>
-    <link rel="stylesheet" href="/css/style.css?v=appearance-5">
+    <script src="/js/customization/apply.js?v=2"></script>
+    <link rel="stylesheet" href="/css/style.css?v=appearance-6">
     <link rel="stylesheet" href="/css/todo-quest.css?v=3">
-    <script src="/js/pet-drag.js?v=pet-actions-1" defer></script>
+    <link rel="stylesheet" href="/css/shared-rpg-buttons.css?v=2">
+    <script src="/js/pet-drag.js?v=pet-actions-2" defer></script>
 </head>
 <body>
     <main class="container quest-page">
@@ -28,8 +29,8 @@
             <input type="hidden" th:field="*{priority}">
             <input type="hidden" th:field="*{dueDate}">
             <div class="confirm-actions">
-                <button class="btn" type="submit">登録する</button>
-                <button class="btn sub" type="submit" formaction="/todos/new">書き直す</button>
+                <button class="btn rpg-image-button rpg-image-button--create" type="submit" aria-label="登録する">登録する</button>
+                <button class="btn sub rpg-image-button rpg-image-button--rewrite" type="submit" formaction="/todos/new" aria-label="書き直す">書き直す</button>
             </div>
         </form>
         </div>

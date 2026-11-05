@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>編集の確認</title>
     <script src="/js/background-theme.js"></script>
-    <script src="/js/customization/catalog.js?v=3"></script>
+    <script src="/js/customization/catalog.js?v=4"></script>
     <script src="/js/customization/storage.js?v=1"></script>
-    <script src="/js/customization/apply.js?v=1"></script>
-    <link rel="stylesheet" href="/css/style.css?v=appearance-5">
+    <script src="/js/customization/apply.js?v=2"></script>
+    <link rel="stylesheet" href="/css/style.css?v=appearance-6">
     <link rel="stylesheet" href="/css/todo-quest.css?v=3">
-    <script src="/js/pet-drag.js?v=pet-actions-1" defer></script>
+    <link rel="stylesheet" href="/css/shared-rpg-buttons.css?v=2">
+    <script src="/js/pet-drag.js?v=pet-actions-2" defer></script>
 </head>
 <body>
     <main class="container quest-page">
@@ -31,8 +32,8 @@
             <input type="hidden" th:field="*{dueDate}">
             <input type="hidden" th:field="*{completed}">
             <div class="confirm-actions">
-                <button class="btn" type="submit">保存する</button>
-                <button class="btn sub" type="submit" th:formaction="@{/todos/{id}/edit(id=${id})}">書き直す</button>
+                <button class="btn rpg-image-button rpg-image-button--save" type="submit" aria-label="保存する">保存する</button>
+                <button class="btn sub rpg-image-button rpg-image-button--rewrite" type="submit" th:formaction="@{/todos/{id}/edit(id=${id})}" aria-label="書き直す">書き直す</button>
             </div>
         </form>
         </div>

@@ -5,17 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ToDo</title>
     <script src="/js/background-theme.js"></script>
-    <script src="/js/customization/catalog.js?v=3"></script>
+    <script src="/js/customization/catalog.js?v=4"></script>
     <script src="/js/customization/storage.js?v=1"></script>
-    <script src="/js/customization/apply.js?v=1"></script>
-    <script src="/js/pet-drag.js?v=pet-actions-1" defer></script>
-    <link rel="stylesheet" th:href="@{/css/style.css(v='appearance-4')}" href="/css/style.css?v=appearance-5">
+    <script src="/js/customization/apply.js?v=2"></script>
+    <script src="/js/pet-drag.js?v=pet-actions-2" defer></script>
+    <link rel="stylesheet" th:href="@{/css/style.css(v='appearance-6')}" href="/css/style.css?v=appearance-6">
+    <link rel="stylesheet" href="/css/shared-rpg-buttons.css?v=2">
 </head>
 <body>
     <main class="container">
         <h1 class="page-title" th:text="${title}">トップページ</h1>
         <p>やることを管理するアプリです。</p>
-        <a class="btn sub" th:href="@{/settings}" href="/settings">⚙ 設定</a>
+        <a class="btn sub rpg-image-button rpg-image-button--settings home-settings-button" th:href="@{/settings}" href="/settings" aria-label="設定">設定</a>
         <div class="calendar-pet-track" role="img" aria-label="メカ祥子が草地を歩き回る">
             <div class="calendar-pet" aria-hidden="true"></div>
         </div>

@@ -1,0 +1,162 @@
+/* Keep the source artwork's aspect ratio and the HTML element's accessible name. */
+.rpg-image-button--list {
+    --rpg-button-image: url('/assets/todos/list/themes/japanese-board/buttons/btn-list.png');
+    --rpg-button-width: 95px;
+    --rpg-button-height: 49px;
+}
+
+.rpg-image-button--create {
+    --rpg-button-image: url('/assets/todos/list/themes/japanese-board/buttons/btn-create.png');
+    --rpg-button-width: 121px;
+    --rpg-button-height: 55px;
+}
+
+.rpg-image-button--delete {
+    --rpg-button-image: url('/assets/todos/list/themes/japanese-board/buttons/btn-delete.png');
+    --rpg-button-width: 95px;
+    --rpg-button-height: 49px;
+}
+
+.rpg-image-button--confirm {
+    --rpg-button-image: url('/assets/todos/list/themes/japanese-board/buttons/btn-confirm.png');
+    --rpg-button-width: 133px;
+    --rpg-button-height: 48px;
+}
+
+.rpg-image-button--save {
+    --rpg-button-image: url('/assets/todos/list/themes/japanese-board/buttons/btn-save.png');
+    --rpg-button-width: 158px;
+    --rpg-button-height: 48px;
+}
+
+.rpg-image-button--rewrite {
+    --rpg-button-image: url('/assets/todos/list/themes/japanese-board/buttons/btn-rewrite.png');
+    --rpg-button-width: 150px;
+    --rpg-button-height: 48px;
+}
+
+.rpg-image-button--back {
+    --rpg-button-image: url('/assets/todos/list/themes/japanese-board/buttons/btn-back.png');
+    --rpg-button-width: 132px;
+    --rpg-button-height: 48px;
+}
+
+.rpg-image-button--settings {
+    --rpg-button-image: url('/assets/todos/list/themes/japanese-board/buttons/btn-settings.png');
+    --rpg-button-width: 109px;
+    --rpg-button-height: 48px;
+}
+
+.rpg-image-button--reset-settings {
+    --rpg-button-image: url('/assets/todos/list/themes/japanese-board/buttons/btn-reset-settings.png');
+    --rpg-button-width: 147px;
+    --rpg-button-height: 50px;
+}
+
+.rpg-image-button--home {
+    --rpg-button-image: url('/assets/todos/list/themes/japanese-board/buttons/btn-home.png');
+    --rpg-button-width: 119px;
+    --rpg-button-height: 49px;
+}
+
+.rpg-image-button--this-week {
+    --rpg-button-image: url('/assets/todos/list/themes/japanese-board/buttons/btn-this-week.png');
+    --rpg-button-width: 101px;
+    --rpg-button-height: 42px;
+}
+
+.rpg-image-button--weekly-report {
+    --rpg-button-image: url('/assets/todos/list/themes/japanese-board/buttons/btn-weekly-report.png');
+    --rpg-button-width: 152px;
+    --rpg-button-height: 42px;
+}
+
+.rpg-image-button--week-calendar {
+    --rpg-button-image: url('/assets/todos/list/themes/japanese-board/buttons/btn-week-calendar.png');
+    --rpg-button-width: 158px;
+    --rpg-button-height: 42px;
+}
+
+.rpg-image-button--move {
+    --rpg-button-image: url('/assets/todos/list/themes/japanese-board/buttons/btn-move.png');
+}
+
+.rpg-image-button--filter {
+    --rpg-button-image: url('/assets/todos/list/themes/japanese-board/buttons/btn-filter.png');
+}
+
+.rpg-image-button--close {
+    --rpg-button-image: url('/assets/todos/list/themes/japanese-board/buttons/btn-close.png');
+}
+
+.quest-page .btn.rpg-image-button,
+.container.calendar-wood .calendar-nav a.rpg-image-button,
+.report-adventure .report-nav a.rpg-image-button,
+html[data-board='japanese'] .settings-page .rpg-image-button,
+html[data-board='japanese'] .home-settings-button.rpg-image-button {
+    display: inline-block;
+    flex: 0 0 auto;
+    width: var(--rpg-button-width);
+    height: var(--rpg-button-height);
+    min-width: 0;
+    min-height: 44px;
+    max-width: none;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    background: var(--rpg-button-image) center / contain no-repeat;
+    box-shadow: none;
+    color: transparent;
+    font-size: 0;
+    line-height: 0;
+    text-shadow: none;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.quest-page .btn.rpg-image-button:hover,
+.container.calendar-wood .calendar-nav a.rpg-image-button:hover,
+.report-adventure .report-nav a.rpg-image-button:hover,
+html[data-board='japanese'] .settings-page .rpg-image-button:hover,
+html[data-board='japanese'] .home-settings-button.rpg-image-button:hover {
+    background-image: var(--rpg-button-image);
+    filter: brightness(1.08);
+}
+
+.quest-page .btn.rpg-image-button:focus-visible,
+.container.calendar-wood .calendar-nav a.rpg-image-button:focus-visible,
+.report-adventure .report-nav a.rpg-image-button:focus-visible,
+html[data-board='japanese'] .settings-page .rpg-image-button:focus-visible,
+html[data-board='japanese'] .home-settings-button.rpg-image-button:focus-visible {
+    outline: 3px solid #214f8a;
+    outline-offset: 2px;
+}
+
+.quest-page .btn.rpg-image-button:active,
+.container.calendar-wood .calendar-nav a.rpg-image-button:active,
+.report-adventure .report-nav a.rpg-image-button:active,
+html[data-board='japanese'] .settings-page .rpg-image-button:active,
+html[data-board='japanese'] .home-settings-button.rpg-image-button:active {
+    transform: translateY(2px);
+}
+
+@media (max-width: 600px) {
+    .quest-page .quest-actions .btn.rpg-image-button,
+    .quest-page .confirm-actions .btn.rpg-image-button {
+        flex: 0 0 auto;
+    }
+
+    .quest-page .quest-actions--with-list .btn:not(.rpg-image-button) {
+        flex: 0 0 auto;
+        width: 102px;
+        padding-inline: 4px;
+    }
+}
+
+@media (max-width: 370px) {
+    .quest-page .quest-actions--with-list {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

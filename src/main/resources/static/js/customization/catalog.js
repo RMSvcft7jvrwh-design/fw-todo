@@ -45,6 +45,7 @@
             choices: [
                 {
                     id: 'meka-sakiko',
+                    name: 'メカ祥子',
                     label: 'メカ祥子を表示',
                     images: {
                         sprite: '/assets/pet/meka-sakiko.png',
@@ -89,8 +90,33 @@
                     previewClass: 'settings-preview--pet'
                 },
                 {
+                    id: 'watage',
+                    name: 'わたげちゃん',
+                    label: 'わたげちゃんを表示',
+                    images: {
+                        atlas: '/assets/pet/watage/assets/sheets/all_48_8x6.png',
+                        preview: '/assets/pet/watage/assets/frames/idle_00.png'
+                    },
+                    sprite: {
+                        format: 'atlas',
+                        manifest: '/assets/pet/watage/manifest.json',
+                        frame: { width: 256, height: 320, columns: 8 },
+                        expectedFrames: 48,
+                        crop: { x: 35, y: 75, width: 185, height: 226 },
+                        scale: { desktop: 0.8, mobile: 0.65 },
+                        actions: [
+                            { id: 'idle', weight: 12 },
+                            { id: 'walk', weight: 3, speed: 55 },
+                            { id: 'look', weight: 2 },
+                            { id: 'groom', weight: 2 },
+                            { id: 'curl', weight: 1 }
+                        ]
+                    },
+                    previewClass: 'settings-preview--pet-atlas'
+                },
+                {
                     id: 'hide',
-                    label: 'メカ祥子を非表示',
+                    label: 'ペットなし',
                     images: {},
                     previewClass: 'settings-preview--no-pet'
                 }

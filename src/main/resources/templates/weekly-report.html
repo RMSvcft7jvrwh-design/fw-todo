@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>週間レポート</title>
     <script src="/js/background-theme.js"></script>
-    <script src="/js/customization/catalog.js?v=3"></script>
+    <script src="/js/customization/catalog.js?v=4"></script>
     <script src="/js/customization/storage.js?v=1"></script>
-    <script src="/js/customization/apply.js?v=1"></script>
-    <link rel="stylesheet" href="/css/style.css?v=appearance-5">
+    <script src="/js/customization/apply.js?v=2"></script>
+    <link rel="stylesheet" href="/css/style.css?v=appearance-6">
     <link rel="stylesheet" href="/css/weekly-report-adventure.css?v=5">
+    <link rel="stylesheet" href="/css/shared-rpg-buttons.css?v=2">
     <script src="/js/game-clock.js" defer></script>
-    <script src="/js/pet-drag.js?v=pet-actions-1" defer></script>
+    <script src="/js/pet-drag.js?v=pet-actions-2" defer></script>
 </head>
 <body>
     <main class="container clock-page report-adventure">
@@ -29,8 +30,8 @@
                 <nav class="report-nav" aria-label="レポートの週移動">
                     <a class="link" th:href="@{/reports/weekly(from=${previousWeek})}">前の週</a>
                     <a class="link" th:href="@{/reports/weekly(from=${nextWeek})}">次の週</a>
-                    <a class="link" th:href="@{/reports/weekly}">今週へ</a>
-                    <a class="link" th:href="@{/calendar(view='week',from=${weekStart})}">週間カレンダーへ</a>
+                    <a class="link rpg-image-button rpg-image-button--this-week" th:href="@{/reports/weekly}" aria-label="今週へ">今週へ</a>
+                    <a class="link rpg-image-button rpg-image-button--week-calendar" th:href="@{/calendar(view='week',from=${weekStart})}" aria-label="週間カレンダーへ">週間カレンダーへ</a>
                 </nav>
             </div>
         </header>

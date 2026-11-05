@@ -6,6 +6,8 @@
         for (const category of Object.keys(catalog)) {
             document.documentElement.dataset[category] = settings[category];
         }
+        const pet = catalog.pet.choices.find(choice => choice.id === settings.pet);
+        document.documentElement.dataset.petFormat = pet?.sprite?.format || 'legacy';
     }
 
     function save(changes) {

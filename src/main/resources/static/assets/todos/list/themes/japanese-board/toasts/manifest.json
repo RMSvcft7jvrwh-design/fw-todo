@@ -1,0 +1,25 @@
+{
+  "name": "Todo 和風通知素材",
+  "items": [
+    {
+      "file": "toast-saved.png",
+      "message": "保存しました",
+      "kind": "success",
+      "operation": "保存完了",
+      "accent": "green"
+    },
+    {
+      "file": "toast-deleted.png",
+      "message": "削除しました",
+      "kind": "success",
+      "operation": "削除完了",
+      "accent": "red"
+    }
+  ],
+  "nativeSize": [
+    660,
+    174
+  ],
+  "recommendedCssSize": "width: 220px; height: auto;",
+  "notes": "透過PNG。画像の表示文字と同じ通知内容をHTMLに残し、role=statusまたはaria-liveで読み上げ可能にする。既存の通知ロジック、表示時間、遷移は維持。"
+}

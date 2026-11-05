@@ -1094,6 +1094,26 @@ html[data-board="plain"] .todo-panel {
     user-select: none;
 }
 
+html[data-pet-format="atlas"] .idle-pet,
+html[data-pet-format="atlas"] .calendar-pet,
+html[data-pet-format="atlas"] .report-pet {
+    width: 148px;
+    height: 188px;
+    background-image: none;
+    animation: none;
+    visibility: hidden;
+}
+
+html[data-pet-format="atlas"] .pet-atlas.is-animating { visibility: visible; }
+
+html[data-pet-format="atlas"] .calendar-pet-track,
+html[data-pet-format="atlas"] .report-pet-track { height: 188px; }
+
+@media (max-width: 600px) {
+    html[data-pet-format="atlas"] .calendar-pet-track,
+    html[data-pet-format="atlas"] .report-pet-track { height: 153px; }
+}
+
 html[data-pet="hide"] .idle-pet,
 html[data-pet="hide"] .calendar-pet-track,
 html[data-pet="hide"] .report-pet-track,

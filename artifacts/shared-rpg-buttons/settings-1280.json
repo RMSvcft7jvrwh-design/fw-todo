@@ -1,0 +1,2 @@
+{"url":"http://localhost:8080/settings","viewport":[1280,720],"document":[1265,950],"buttons":[{"text":"‚â‚é‚±‚Æˆê——‚Ö","label":"‚â‚é‚±‚Æˆê——‚Ö","href":"/todos","formAction":null,"rect":{"x":367.03125,"y":821.546875,"width":95,"height":49,"top":821.546875,"right":462.03125,"bottom":870.546875,"left":367.03125},"background":"url(\"http://localhost:8080/assets/todos/list/themes/japanese-board/buttons/btn-list.png\")","backgroundSize":"contain","fontSize":"0px"}],"brokenImages":[],"toolbarScroll":null}
+Console Failed to load resource: net::ERR_NETWORK_ACCESS_DENIED

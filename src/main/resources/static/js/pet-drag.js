@@ -74,12 +74,15 @@
     }
 
     function place(left, top) {
-        pet.style.left = `${clamp(left, window.innerWidth - pet.offsetWidth)}px`;
-        pet.style.top = `${clamp(top, window.innerHeight - pet.offsetHeight)}px`;
+        const width = selectedPet?.sprite?.format === 'atlas' ? Math.min(window.innerWidth, window.visualViewport?.width || window.innerWidth) : window.innerWidth;
+        const height = selectedPet?.sprite?.format === 'atlas' ? Math.min(window.innerHeight, window.visualViewport?.height || window.innerHeight) : window.innerHeight;
+        pet.style.left = `${clamp(left, width - pet.offsetWidth)}px`;
+        pet.style.top = `${clamp(top, height - pet.offsetHeight)}px`;
     }
 
     function groundTop() {
-        return Math.max(0, window.innerHeight - pet.offsetHeight - (Number.isFinite(groundOffset) ? groundOffset : 28));
+        const height = selectedPet?.sprite?.format === 'atlas' ? Math.min(window.innerHeight, window.visualViewport?.height || window.innerHeight) : window.innerHeight;
+        return Math.max(0, height - pet.offsetHeight - (Number.isFinite(groundOffset) ? groundOffset : 28));
     }
 
     function stopFlight() {
@@ -99,7 +102,8 @@
         const floor = groundTop();
         const nextTop = pet.offsetTop + speedY * elapsed;
         const nextLeft = pet.offsetLeft + speedX * elapsed;
-        const maxLeft = Math.max(0, window.innerWidth - pet.offsetWidth);
+        const maxWidth = selectedPet?.sprite?.format === 'atlas' ? Math.min(window.innerWidth, window.visualViewport?.width || window.innerWidth) : window.innerWidth;
+        const maxLeft = Math.max(0, maxWidth - pet.offsetWidth);
         if (nextTop < 0 && speedY < 0) speedY = 0;
         if (nextLeft < 0 || nextLeft > maxLeft) speedX = 0;
         if (nextTop >= floor && speedY >= 0) {
@@ -156,6 +160,7 @@
         const velocity = event.type === 'pointerup' ? throwSpeed(event) : { x: 0, y: 0 };
         pointerId = null;
         pet.classList.remove('is-dragging');
+        pet.dispatchEvent(new Event('pet:release'));
         if (pet.hasPointerCapture(event.pointerId)) {
             pet.releasePointerCapture(event.pointerId);
         }
@@ -182,7 +187,7 @@
             pet.parentElement.setAttribute('aria-hidden', 'true');
             pet.removeAttribute('aria-hidden');
             pet.setAttribute('role', 'img');
-            pet.setAttribute('aria-label', 'メカ祥子');
+            pet.setAttribute('aria-label', selectedPet?.name || 'ペット');
         }
         document.body.append(pet);
         pet.style.position = 'fixed';
@@ -216,6 +221,13 @@
     });
 })();
 
+// Atlas pets share the drag and flight controller above; their frame renderer is separate.
+(() => {
+    const id = window.AppearanceSettings?.get().pet;
+    const choice = window.AppearanceCatalog?.pet.choices.find(item => item.id === id);
+    if (choice?.sprite?.format === 'atlas') import('/js/pet-atlas.js?v=1');
+})();
+
 // One complete sheet action is played before choosing the next one.
 (() => {
     const pet = document.querySelector('.calendar-pet, .report-pet, .idle-pet');
@@ -223,7 +235,7 @@
     const group = window.AppearanceCatalog?.pet;
     const choice = group?.choices.find(item => item.id === window.AppearanceSettings.get().pet);
     const sprite = choice?.sprite;
-    if (!sprite?.actions) return;
+    if (!sprite?.actions || sprite.format === 'atlas') return;
 
     const track = pet.parentElement.matches('.calendar-pet-track, .report-pet-track') ? pet.parentElement : null;
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');

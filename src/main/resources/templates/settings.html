@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>見た目の設定</title>
     <script src="/js/background-theme.js"></script>
-    <script src="/js/customization/catalog.js?v=3"></script>
+    <script src="/js/customization/catalog.js?v=4"></script>
     <script src="/js/customization/storage.js?v=1"></script>
-    <script src="/js/customization/apply.js?v=1"></script>
-    <script src="/js/customization/settings-ui.js?v=1" defer></script>
-    <link rel="stylesheet" href="/css/style.css?v=appearance-5">
+    <script src="/js/customization/apply.js?v=2"></script>
+    <script src="/js/customization/settings-ui.js?v=2" defer></script>
+    <script src="/js/pet-drag.js?v=pet-actions-2" defer></script>
+    <link rel="stylesheet" href="/css/style.css?v=appearance-6">
+    <link rel="stylesheet" href="/css/shared-rpg-buttons.css?v=2">
+    <link rel="stylesheet" href="/css/settings-theme.css?v=2">
 </head>
 <body>
     <main class="container settings-page">
@@ -19,15 +22,16 @@
             <form id="appearance-settings">
                 <div id="appearance-options"></div>
                 <div class="settings-footer">
-                    <button class="btn sub" id="appearance-reset" type="button">初期設定に戻す</button>
+                    <button class="btn sub rpg-image-button rpg-image-button--reset-settings" id="appearance-reset" type="button" aria-label="初期設定に戻す">初期設定に戻す</button>
                     <span id="appearance-status" role="status" aria-live="polite"></span>
                 </div>
             </form>
             <nav class="settings-nav" aria-label="画面移動">
-                <a class="btn sub" th:href="@{/}" href="/">ホームへ</a>
-                <a class="btn" th:href="@{/todos}" href="/todos">やること一覧へ</a>
+                <a class="btn sub rpg-image-button rpg-image-button--home" th:href="@{/}" href="/" aria-label="ホームへ">ホームへ</a>
+                <a class="btn rpg-image-button rpg-image-button--list" th:href="@{/todos}" href="/todos" aria-label="やること一覧へ">やること一覧へ</a>
             </nav>
         </div>
     </main>
+    <div class="idle-pet" role="img" aria-label="選択中のペット"></div>
 </body>
 </html>
