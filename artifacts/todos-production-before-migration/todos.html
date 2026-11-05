@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>やること一覧</title>
+    <script src="/js/background-theme.js"></script>
+    <script src="/js/customization/catalog.js?v=3"></script>
+    <script src="/js/customization/storage.js?v=1"></script>
+    <script src="/js/customization/apply.js?v=1"></script>
+    <link rel="stylesheet" th:href="@{/css/style.css(v='appearance-4')}" href="/css/style.css?v=appearance-5">
+    <script src="/js/pet-drag.js?v=pet-actions-1" defer></script>
+</head>
+<body>
+    <main class="container todo-page">
+        <h1 class="page-title">やること一覧</h1>
+        <div class="todo-panel todo-panel--japanese">
+            <div class="todo-panel__content" role="region" aria-label="やること一覧" tabindex="0">
+                <p class="flash" th:if="${message != null}" th:text="${message}"></p>
+                <form class="search-bar" th:action="@{/todos}" method="get">
+                    <label for="keyword">やることの名前</label>
+                    <input class="form-input" type="text" id="keyword" name="keyword" th:value="${keyword}">
+                    <label for="category">ジャンル</label>
+                    <select class="form-input" id="category" name="category">
+                        <option value="" th:selected="${category == ''}">すべて</option>
+                        <option value="デザイン" th:selected="${category == 'デザイン'}">デザイン</option>
+                        <option value="マーケティング" th:selected="${category == 'マーケティング'}">マーケティング</option>
+                        <option value="プログラミング" th:selected="${category == 'プログラミング'}">プログラミング</option>
+                        <option value="資格" th:selected="${category == '資格'}">資格</option>
+                        <option value="就職活動" th:selected="${category == '就職活動'}">就職活動</option>
+                    </select>
+                    <input type="hidden" name="order" th:value="${order}">
+                    <button class="btn" type="submit">絞り込む</button>
+                </form>
+                <nav class="sort-links" aria-label="期限の並び替え">
+                    <a class="link" th:href="@{/todos(keyword=${keyword},category=${category},order='asc')}">期限が近い順</a>
+                    <a class="link" th:href="@{/todos(keyword=${keyword},category=${category},order='desc')}">期限が遠い順</a>
+                </nav>
+                <nav class="todo-actions" aria-label="やること画面の移動">
+                    <a class="btn" href="/todos/new">新規登録</a>
+                    <a class="btn sub" href="/calendar">カレンダーで見る</a>
+                    <a class="btn sub" th:href="@{/}" href="/">ホームに戻る</a>
+                    <a class="btn sub" th:href="@{/settings}" href="/settings">⚙ 設定</a>
+                </nav>
+                <p class="todo-panel__empty" th:if="${#lists.isEmpty(todos)}">まだ1件も登録されていません</p>
+                <div class="todo-panel__table-scroll" th:unless="${#lists.isEmpty(todos)}" role="region" aria-label="やること一覧表" tabindex="0">
+                    <table class="todo-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">やること</th>
+                                <th scope="col">ジャンル</th>
+                                <th scope="col">優先度</th>
+                                <th scope="col">期限</th>
+                                <th scope="col">状態</th>
+                                <th scope="col">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="todo : ${todos}" th:classappend="${todo.completed != true and todo.dueDate != null and todo.dueDate.isBefore(today)} ? 'todo-overdue'">
+                                <td th:text="${todo.title}"></td>
+                                <td th:text="${todo.category}"></td>
+                                <td><span class="priority-high-marker" th:if="${todo.priority == 1}" aria-hidden="true">★</span><span th:text="${todo.priority == 1 ? '高' : (todo.priority == 2 ? '中' : '低')}"></span></td>
+                                <td th:text="${todo.dueDate}"></td>
+                                <td>
+                                    <span th:text="${todo.completed ? '完了' : '未完了'}"></span>
+                                    <span th:if="${todo.completedAt != null}" th:text="|（${#temporals.format(todo.completedAt, 'yyyy-MM-dd')}）|"></span>
+                                </td>
+                                <td><a class="link" th:href="@{/todos/{id}/edit(id=${todo.id})}">編集</a> <a class="link" th:href="@{/todos/{id}/delete(id=${todo.id})}">削除</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div class="idle-pet" th:classappend="${message == '登録しました'} ? 'is-jumping'" role="img" aria-label="メカ祥子が待機している"></div>
+</body>
+</html>

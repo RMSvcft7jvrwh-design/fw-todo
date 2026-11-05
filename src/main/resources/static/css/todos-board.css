@@ -1,0 +1,221 @@
+﻿.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+html[data-board="plain"] .todo-board-layout,
+html[data-board="plain"] .notice-dialog,
+html:not([data-board="plain"]) .plain-todos { display: none; }
+.todo-board-layout, .notice-dialog { font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif; }
+
+.todo-board-layout {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: 8px;
+    width: 100%;
+    height: 100dvh;
+    min-height: 0;
+    padding: 16px;
+}
+
+.board {
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.board__frame { position: absolute; z-index: 1; inset: 42px 36px 44px; min-width: 0; min-height: 0; }
+.board__frame::after { content: ''; position: absolute; z-index: 2; inset: 0; border: 32px solid transparent; border-image-source: url('../assets/todos/list/themes/japanese-board/exterior/wood-frame-9slice.png'); border-image-slice: 72; border-image-width: 32px; border-image-repeat: repeat; pointer-events: none; }
+.board__roof { position: absolute; z-index: 3; top: 0; right: 0; left: 0; height: 80px; border: solid transparent; border-width: 0 69px 0 73px; border-image-source: url('../assets/todos/list/themes/japanese-board/exterior/roof-3slice.png'); border-image-slice: 0 138 0 146 fill; border-image-width: 0 69px 0 73px; border-image-repeat: repeat; pointer-events: none; }
+.board__post { position: absolute; z-index: 2; top: 48px; bottom: 0; width: 80px; border: solid transparent; border-width: 80px 0; border-image-source: url('../assets/todos/list/themes/japanese-board/exterior/post-3slice.png'); border-image-slice: 160 0 160 0 fill; border-image-width: 80px 0; border-image-repeat: stretch repeat; pointer-events: none; }
+.board__post--left { left: 0; }
+.board__post--right { right: 0; transform: scaleX(-1); }
+.board__foot { position: absolute; z-index: 4; bottom: -20px; display: block; width: 220px; height: auto; pointer-events: none; }
+.board__foot--left { left: -70px; }
+.board__foot--right { right: -70px; transform: scaleX(-1); }
+.board__lantern { position: absolute; z-index: 4; top: 64px; left: -24px; display: block; width: 120px; height: auto; pointer-events: none; }
+.board__sakura { position: absolute; z-index: 4; top: -6px; right: 22px; display: block; width: 170px; height: auto; pointer-events: none; }
+.board__title { position: absolute; z-index: 5; top: 4px; left: 50%; width: 300px; margin: 0; transform: translateX(-50%); pointer-events: none; }
+.board__title img { display: block; width: 100%; }
+
+.board__paper {
+    position: absolute;
+    z-index: 1;
+    inset: 32px;
+    min-width: 0;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 12px;
+    background: #8a4a27 url('../assets/todos/list/themes/japanese-board/exterior/wood-surface-tile.png') left top / 512px 256px repeat;
+    box-shadow: inset 0 0 18px #30170877;
+    scrollbar-color: #d1ad76 #674025;
+    scrollbar-width: thin;
+}
+
+.board__paper:focus-visible { outline: 3px solid #ffe0a8; outline-offset: -6px; }
+.board__empty { width: fit-content; max-width: 100%; margin: 36px auto; border: 2px solid #a67743; border-radius: 6px; padding: 14px 20px; background: #f5e7c6; color: #3b2719; font-size: 16px; font-weight: 700; text-align: center; }
+.notice-grid { display: grid; grid-template-columns: repeat(7, 140px); justify-content: center; gap: 12px; align-items: start; min-width: 0; }
+
+.notice-thumb {
+    position: relative;
+    display: block;
+    width: 100%;
+    min-width: 0;
+    min-height: 160px;
+    aspect-ratio: 1 / 1.12;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: #35200f;
+    text-align: center;
+    cursor: pointer;
+    filter: drop-shadow(1px 3px 3px #291207bb);
+    transform: rotate(var(--tilt));
+    transition: transform 120ms ease, filter 120ms ease;
+}
+.notice-thumb:nth-child(8n+1) { --tilt: -1.4deg; }
+.notice-thumb:nth-child(8n+2) { --tilt: 1deg; }
+.notice-thumb:nth-child(8n+3) { --tilt: -0.7deg; }
+.notice-thumb:nth-child(8n+4) { --tilt: 1.3deg; }
+.notice-thumb:nth-child(8n+5) { --tilt: -1deg; }
+.notice-thumb:nth-child(8n+6) { --tilt: 0.6deg; }
+.notice-thumb:nth-child(8n+7) { --tilt: 1.5deg; }
+.notice-thumb:nth-child(8n) { --tilt: -0.8deg; }
+.notice-thumb:hover { transform: rotate(var(--tilt)) translateY(-3px) scale(1.03); filter: drop-shadow(2px 6px 5px #291207cc); z-index: 1; }
+.notice-thumb:focus-visible { outline: 3px solid #ffe3ad; outline-offset: 2px; z-index: 2; }
+.notice-thumb[hidden] { display: none; }
+.notice-thumb__image { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.notice-thumb__pin { position: absolute; z-index: 2; top: 0; left: 50%; width: 21px; height: 29px; object-fit: contain; transform: translateX(-50%); pointer-events: none; }
+.notice-thumb__title { position: absolute; top: 34%; left: 17%; right: 17%; display: -webkit-box; max-height: 2.7em; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; font-size: 13px; font-weight: 700; line-height: 1.35; overflow-wrap: anywhere; pointer-events: none; }
+.notice-thumb__stamp { position: absolute; right: 9%; bottom: 12%; width: 42px; height: 30px; object-fit: contain; pointer-events: none; }
+.notice-thumb__stamp--done { right: 10%; bottom: 10%; width: 34px; height: 34px; }
+
+.preview-controls {
+    display: grid;
+    grid-template-columns: auto auto auto auto minmax(0, 1fr);
+    align-items: center;
+    column-gap: 10px;
+    width: 100%;
+    height: 62px;
+    min-width: 0;
+    border: 2px solid #b88c4d;
+    border-radius: 8px;
+    padding: 4px 10px;
+    background: linear-gradient(#2b170838, #170a043d), url('../assets/todos/list/themes/japanese-board/exterior/wood-surface-tile.png') left top / 512px 256px repeat;
+    box-shadow: inset 0 0 0 2px #42210e, inset 0 2px 6px #f6d99540, 0 3px 6px #30180e55;
+}
+.board-navigation { position: relative; z-index: 10; border: 1px solid #c19a5e; border-radius: 3px; background: #f2e2bc; color: #57351e; font-size: 12px; font-weight: 700; white-space: nowrap; }
+.board-navigation summary { padding: 4px 8px; cursor: pointer; list-style: none; }
+.board-navigation summary::-webkit-details-marker { display: none; }
+.board-navigation summary::after { content: ' ▾'; }
+.board-navigation nav { position: absolute; top: calc(100% + 8px); left: 0; display: grid; gap: 4px; min-width: 176px; border: 2px solid #b88c4d; border-radius: 5px; padding: 7px; background: #f5e7c6; box-shadow: 2px 4px 9px #24100677; }
+.board-navigation nav a { border-radius: 3px; padding: 6px 8px; color: #412718; text-decoration: none; }
+.board-navigation nav a:hover { background: #e1c08b; }
+.board-navigation summary:focus-visible, .board-navigation nav a:focus-visible { outline: 3px solid #ffe28f; outline-offset: 2px; }
+.preview-controls__search, .preview-controls__sort { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.preview-controls label, .preview-controls__sort > span { flex: none; color: #fff0ce; font-size: 14px; font-weight: 700; white-space: nowrap; text-shadow: 0 1px 2px #210e08; }
+.preview-controls input, .preview-controls select { min-width: 0; height: 40px; border: 1px solid #c59b60; border-radius: 4px; padding: 7px 8px; background: #f7ebd0; color: #3b2719; box-shadow: inset 0 1px 3px #6a432c33; font-size: 14px; }
+.preview-controls input { flex: none; width: 230px; max-width: 260px; }
+.preview-controls select { flex: none; width: 124px; }
+.preview-controls button, .preview-controls__sort-buttons a { display: grid; place-items: center; min-height: 40px; border: 1px solid #a97b3f; border-radius: 4px; padding: 6px 10px; background: linear-gradient(#f4dfad, #dcb67a); color: #412718; box-shadow: inset 0 1px #fff2d4, 0 2px 0 #4c2b16; cursor: pointer; font-size: 14px; font-weight: 700; text-decoration: none; white-space: nowrap; }
+.preview-controls button:hover, .preview-controls__sort-buttons a:hover { background: linear-gradient(#fff0c7, #e9c793); }
+.preview-controls__sort-buttons { display: flex; gap: 6px; }
+.preview-controls__sort-buttons a { min-width: 72px; }
+.preview-controls__sort-buttons a.is-selected { border-color: #ffe19d; background: #6b3c1d; color: #fff1d4; box-shadow: inset 0 1px 3px #241006; }
+.preview-controls .preview-controls__create { display: block; width: 110px; height: 50px; border: 0; background: url('../assets/todos/list/themes/japanese-board/buttons/btn-create.png') center / contain no-repeat; cursor: pointer; }
+.preview-controls__create:hover { filter: brightness(1.08); }
+.preview-controls__count { justify-self: end; margin: 0; color: #fff0ce; font-size: 13px; font-weight: 700; white-space: nowrap; text-shadow: 0 1px 2px #210e08; }
+.preview-controls button:focus-visible, .preview-controls a:focus-visible, .preview-controls input:focus-visible, .preview-controls select:focus-visible { outline: 3px solid #ffe28f; outline-offset: 2px; }
+.board-flash { position: fixed; z-index: 25; top: 82px; right: 16px; max-width: min(360px, calc(100vw - 32px)); margin: 0; border: 2px solid #b88c4d; border-radius: 5px; padding: 8px 12px; background: #f5e7c6; color: #412718; box-shadow: 2px 4px 8px #24100666; pointer-events: none; }
+
+.notice-dialog { width: min(780px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); border: 4px solid #673a22; border-radius: 10px; padding: 0; background: #f5e8c8; color: #342314; box-shadow: 0 20px 60px #170c07aa; }
+.notice-dialog[open] { display: flex; flex-direction: column; }
+.notice-dialog::backdrop { background: #1d120bcc; }
+.notice-dialog__close { position: absolute; z-index: 3; top: 9px; right: 9px; display: grid; place-items: center; width: 40px; height: 40px; border: 2px solid #6e472c; border-radius: 50%; background: #fff9ea; color: #4b2614; font-size: 28px; line-height: 1; cursor: pointer; }
+.notice-dialog__close:focus-visible, .notice-dialog__action:focus-visible { outline: 3px solid #194f8f; outline-offset: 2px; }
+.notice-dialog__body { display: grid; flex: 1 1 auto; min-height: 0; grid-template-columns: minmax(0, 310px) minmax(0, 1fr); align-items: center; gap: 22px; overflow-y: auto; padding: 28px; }
+.notice-dialog__art { position: relative; display: grid; justify-items: center; align-self: center; min-width: 0; }
+.notice-dialog__image { display: block; width: 100%; max-width: 310px; max-height: calc(100dvh - 90px); height: auto; object-fit: contain; filter: drop-shadow(2px 5px 6px #5c351b99); }
+.notice-dialog__pin { position: absolute; top: 0; left: 50%; width: 36px; height: 51px; object-fit: contain; transform: translateX(-50%); }
+.notice-dialog__paper-title { position: absolute; top: 36%; left: 50%; display: -webkit-box; width: min(60%, 180px); max-height: 4.2em; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 3; font-size: 17px; font-weight: 700; line-height: 1.4; text-align: center; overflow-wrap: anywhere; transform: translateX(-50%); pointer-events: none; }
+.notice-dialog__stamp { position: absolute; right: 4%; bottom: 3%; width: 78px; max-height: 78px; object-fit: contain; }
+.notice-dialog__stamp[hidden] { display: none; }
+.notice-dialog__details { min-width: 0; padding-right: 10px; }
+.notice-dialog__eyebrow { margin: 0 0 8px; color: #9d5c28; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; }
+.notice-dialog h2 { margin: 0 0 12px; padding-right: 25px; font-size: clamp(20px, 2.2vw, 27px); line-height: 1.35; overflow-wrap: anywhere; }
+.notice-dialog__memo { margin: 0 0 16px; line-height: 1.6; overflow-wrap: anywhere; }
+.notice-dialog dl { display: grid; gap: 0; margin: 0; border-top: 1px solid #bda27a; }
+.notice-dialog dl > div { display: grid; grid-template-columns: 6em minmax(0, 1fr); gap: 8px; border-bottom: 1px solid #bda27a; padding: 7px 0; }
+.notice-dialog dt { color: #715032; font-weight: 700; }
+.notice-dialog dd { min-width: 0; margin: 0; overflow-wrap: anywhere; }
+.notice-dialog__actions { display: flex; flex: none; justify-content: flex-end; gap: 8px; padding: 0 32px 18px; background: #f5e8c8; }
+.notice-dialog__action { width: 112px; height: 57px; border: 0; padding: 0; background: center / contain no-repeat; cursor: pointer; }
+.notice-dialog__action--edit { background-image: url('../assets/todos/list/themes/japanese-board/buttons/btn-edit.png'); }
+.notice-dialog__action--delete { background-image: url('../assets/todos/list/themes/japanese-board/buttons/btn-delete.png'); }
+.notice-dialog__hint { margin: 8px 0 0; color: #715032; font-size: 12px; }
+
+@media (min-width: 1450px) {
+    .board__frame { inset: 48px 42px 52px; }
+    .notice-grid { grid-template-columns: repeat(7, 165px); }
+}
+
+@media (min-width: 761px) and (max-width: 1279px) {
+    .preview-controls { grid-template-columns: auto minmax(0, 1fr) auto auto; grid-template-rows: 40px 50px; gap: 4px 10px; height: auto; padding: 6px 10px; }
+    .preview-controls__search { grid-column: 1 / -1; grid-row: 1; }
+    .board-navigation { grid-column: 1; grid-row: 2; }
+    .preview-controls__sort { grid-column: 2; grid-row: 2; }
+    .preview-controls__create { grid-column: 3; grid-row: 2; }
+    .preview-controls__count { grid-column: 4; grid-row: 2; }
+}
+
+@media (min-width: 1121px) and (max-width: 1279px) { .notice-grid { grid-template-columns: repeat(6, 140px); } }
+@media (min-width: 901px) and (max-width: 1120px) { .notice-grid { grid-template-columns: repeat(5, 140px); } }
+@media (min-width: 761px) and (max-width: 900px) { .notice-grid { grid-template-columns: repeat(4, 140px); } }
+
+@media (max-width: 760px) {
+    .todo-board-layout { gap: 8px; padding: 8px 10px 12px; }
+    .preview-controls { grid-template-columns: auto auto minmax(0, 1fr); grid-template-rows: 38px 38px 47px; gap: 4px 8px; height: auto; padding: 6px 8px; }
+    .preview-controls__search, .preview-controls__sort { grid-column: 1 / -1; width: 100%; }
+    .preview-controls__search { grid-row: 1; display: grid; grid-template-columns: minmax(0, 1fr) 120px 72px; gap: 5px; }
+    .preview-controls__search label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .preview-controls__search input, .preview-controls__search select { width: 100%; height: 38px; }
+    .preview-controls__sort { grid-row: 2; justify-content: space-between; }
+    .preview-controls__sort > span { font-size: 13px; }
+    .preview-controls button, .preview-controls__sort-buttons a { min-height: 38px; padding: 5px 6px; font-size: 14px; }
+    .board-navigation { grid-column: 1; grid-row: 3; }
+    .preview-controls .preview-controls__create { grid-column: 2; grid-row: 3; width: 105px; height: 47px; }
+    .preview-controls__count { grid-column: 3; grid-row: 3; font-size: 12px; }
+    .board__frame { inset: 50px 0 0; }
+    .board__frame::after { border-width: 16px; border-image-width: 16px; }
+    .board__paper { inset: 16px; padding: 8px; }
+    .board__roof, .board__post, .board__foot, .board__lantern, .board__sakura { display: none; }
+    .board__title { top: 0; width: 240px; }
+    .notice-grid { grid-template-columns: 230px; gap: 12px; }
+    .notice-thumb { min-height: 165px; }
+    .notice-thumb__title { font-size: 14px; }
+    .notice-dialog { width: calc(100vw - 12px); max-height: calc(100dvh - 12px); }
+    .notice-dialog__body { grid-template-columns: minmax(0, 1fr); gap: 5px; padding: 12px 16px 18px; }
+    .notice-dialog__art { width: min(100%, 200px); justify-self: center; }
+    .notice-dialog__image { max-height: 200px; }
+    .notice-dialog__pin { width: 23px; height: 33px; }
+    .notice-dialog__paper-title { width: min(38%, 120px); font-size: 12px; }
+    .notice-dialog__stamp { width: 48px; max-height: 48px; }
+    .notice-dialog__details { padding-right: 0; }
+    .notice-dialog__eyebrow { margin-bottom: 2px; }
+    .notice-dialog h2 { margin-bottom: 7px; padding-right: 32px; font-size: 19px; }
+    .notice-dialog__memo { margin-bottom: 8px; font-size: 14px; line-height: 1.45; }
+    .notice-dialog dl { font-size: 14px; }
+    .notice-dialog dl > div { padding: 4px 0; }
+    .notice-dialog__actions { justify-content: center; padding: 8px 16px 10px; }
+    .notice-dialog__action { width: 92px; height: 47px; }
+}
+
+@media (max-width: 360px) {
+    .preview-controls__search { grid-template-columns: minmax(0, 1fr) 100px 72px; }
+}
+
+@media (prefers-reduced-motion: reduce) { .notice-thumb { transition: none; } }
+

@@ -11,10 +11,10 @@
 <body>
     <main class="preview-layout">
         <aside class="preview-controls" aria-label="検索と並び替えの検証">
-            <p class="preview-controls__note">検証用画面です。編集・削除は実データを操作しません。</p>
+            <p class="preview-controls__note" title="検証用画面です。編集・削除は実データを操作しません。"><span>検証用</span><span class="visually-hidden">画面です。編集・削除は実データを操作しません。</span></p>
             <div class="preview-controls__search"><label for="preview-keyword">やることの名前</label><input id="preview-keyword" type="search" placeholder="名前で探す"><label for="preview-category">ジャンル</label><select id="preview-category"><option value="">すべて</option><option>デザイン</option><option>マーケティング</option><option>プログラミング</option><option>資格</option><option>就職活動</option></select><button id="preview-search" type="button">絞り込む</button></div>
             <div class="preview-controls__sort"><span>期限の並び替え</span><div class="preview-controls__sort-buttons"><button type="button" data-order="asc">近い順</button><button type="button" data-order="desc">遠い順</button></div></div>
-            <button class="preview-controls__create" type="button">新規登録</button>
+            <a class="preview-controls__create" href="/todos/new"><span class="visually-hidden">新規登録</span></a>
             <p class="preview-controls__count" id="preview-count" role="status">8件の依頼書</p>
         </aside>
         <section class="board" aria-labelledby="preview-title">

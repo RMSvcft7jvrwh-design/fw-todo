@@ -7,6 +7,7 @@
 * { box-sizing: border-box; }
 body { min-width: 320px; min-height: 100dvh; margin: 0; }
 button, input, select { font: inherit; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
 .preview-layout {
     display: grid;
@@ -93,19 +94,35 @@ button, input, select { font: inherit; }
 .notice-thumb__stamp { position: absolute; right: 9%; bottom: 12%; width: 42px; height: 30px; object-fit: contain; pointer-events: none; }
 .notice-thumb__stamp--done { right: 10%; bottom: 10%; width: 34px; height: 34px; }
 
-.preview-controls { display: grid; grid-template-columns: minmax(0, 1fr) auto auto auto; align-items: center; gap: 4px 16px; width: 100%; min-width: 0; border: 3px solid #75411f; border-radius: 8px; padding: 6px 12px; background: #f5e5bd; box-shadow: 5px 6px 0 #75411f45; }
-.preview-controls__note { grid-column: 1 / -1; margin: 0; font-size: 12px; line-height: 1.2; }
+.preview-controls {
+    display: grid;
+    grid-template-columns: auto auto auto auto minmax(0, 1fr);
+    align-items: center;
+    column-gap: 10px;
+    width: 100%;
+    height: 62px;
+    min-width: 0;
+    border: 2px solid #b88c4d;
+    border-radius: 8px;
+    padding: 4px 10px;
+    background: linear-gradient(#2b170838, #170a043d), url('../assets/todos/list/themes/japanese-board/exterior/wood-surface-tile.png') left top / 512px 256px repeat;
+    box-shadow: inset 0 0 0 2px #42210e, inset 0 2px 6px #f6d99540, 0 3px 6px #30180e55;
+}
+.preview-controls__note { display: inline-flex; align-items: center; justify-content: center; margin: 0; border: 1px solid #c19a5e; border-radius: 3px; padding: 4px 6px; background: #f2e2bc; color: #57351e; font-size: 12px; font-weight: 700; line-height: 1.2; white-space: nowrap; transform: rotate(-1deg); }
 .preview-controls__search, .preview-controls__sort { display: flex; align-items: center; gap: 6px; min-width: 0; }
-.preview-controls label, .preview-controls__sort > span { flex: none; font-size: 14px; font-weight: 700; }
-.preview-controls input, .preview-controls select { min-width: 0; min-height: 39px; border: 1px solid #9d7850; border-radius: 4px; padding: 8px; background: #fffaf0; color: inherit; font-size: 14px; }
-.preview-controls input { flex: 1 1 190px; }
-.preview-controls select { flex: none; width: 130px; }
-.preview-controls button { min-height: 39px; border: 1px solid #6b3c1c; border-radius: 4px; padding: 6px 12px; background: #81502c; color: #fffaf0; cursor: pointer; white-space: nowrap; }
+.preview-controls label, .preview-controls__sort > span { flex: none; color: #fff0ce; font-size: 14px; font-weight: 700; white-space: nowrap; text-shadow: 0 1px 2px #210e08; }
+.preview-controls input, .preview-controls select { min-width: 0; height: 40px; border: 1px solid #c59b60; border-radius: 4px; padding: 7px 8px; background: #f7ebd0; color: #3b2719; box-shadow: inset 0 1px 3px #6a432c33; font-size: 14px; }
+.preview-controls input { flex: none; width: 230px; max-width: 260px; }
+.preview-controls select { flex: none; width: 124px; }
+.preview-controls button { min-height: 40px; border: 1px solid #a97b3f; border-radius: 4px; padding: 6px 10px; background: linear-gradient(#f4dfad, #dcb67a); color: #412718; box-shadow: inset 0 1px #fff2d4, 0 2px 0 #4c2b16; cursor: pointer; font-size: 14px; font-weight: 700; white-space: nowrap; }
+.preview-controls button:hover { background: linear-gradient(#fff0c7, #e9c793); }
 .preview-controls__sort-buttons { display: flex; gap: 6px; }
-.preview-controls__sort-buttons button { min-width: 76px; }
-.preview-controls .preview-controls__create { background: #57351d; }
-.preview-controls__count { margin: 0; color: #67472c; font-size: 13px; white-space: nowrap; }
-.preview-controls button:focus-visible { outline: 3px solid #194f8f; outline-offset: 2px; }
+.preview-controls__sort-buttons button { min-width: 72px; }
+.preview-controls__sort-buttons button[aria-pressed='true'] { border-color: #ffe19d; background: #6b3c1d; color: #fff1d4; box-shadow: inset 0 1px 3px #241006; }
+.preview-controls .preview-controls__create { display: block; width: 110px; height: 50px; border: 0; background: url('../assets/todos/list/themes/japanese-board/buttons/btn-create.png') center / contain no-repeat; cursor: pointer; }
+.preview-controls__create:hover { filter: brightness(1.08); }
+.preview-controls__count { justify-self: end; margin: 0; color: #fff0ce; font-size: 13px; font-weight: 700; white-space: nowrap; text-shadow: 0 1px 2px #210e08; }
+.preview-controls button:focus-visible, .preview-controls a:focus-visible, .preview-controls input:focus-visible, .preview-controls select:focus-visible { outline: 3px solid #ffe28f; outline-offset: 2px; }
 
 .notice-dialog { width: min(780px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); border: 4px solid #673a22; border-radius: 10px; padding: 0; background: #f5e8c8; color: #342314; box-shadow: 0 20px 60px #170c07aa; }
 .notice-dialog::backdrop { background: #1d120bcc; }
@@ -138,11 +155,12 @@ button, input, select { font: inherit; }
 }
 
 @media (min-width: 761px) and (max-width: 1279px) {
-    .preview-controls { grid-template-columns: minmax(0, 1fr) auto; }
-    .preview-controls__search { grid-column: 1; }
-    .preview-controls__sort { grid-column: 2; }
-    .preview-controls__create { grid-column: 1; justify-self: start; }
-    .preview-controls__count { grid-column: 2; justify-self: end; }
+    .preview-controls { grid-template-columns: auto minmax(0, 1fr) auto auto; grid-template-rows: 40px 50px; gap: 4px 10px; height: auto; padding: 6px 10px; }
+    .preview-controls__search { grid-column: 1 / -1; grid-row: 1; }
+    .preview-controls__note { grid-column: 1; grid-row: 2; }
+    .preview-controls__sort { grid-column: 2; grid-row: 2; }
+    .preview-controls__create { grid-column: 3; grid-row: 2; }
+    .preview-controls__count { grid-column: 4; grid-row: 2; }
 }
 
 @media (min-width: 1121px) and (max-width: 1279px) { .notice-grid { grid-template-columns: repeat(6, 140px); } }
@@ -151,17 +169,17 @@ button, input, select { font: inherit; }
 
 @media (max-width: 760px) {
     .preview-layout { gap: 8px; padding: 8px 10px 12px; }
-    .preview-controls { grid-template-columns: minmax(0, 1fr) auto; gap: 6px; padding: 8px; }
-    .preview-controls__note { grid-column: 1 / -1; font-size: 12px; }
+    .preview-controls { grid-template-columns: auto auto minmax(0, 1fr); grid-template-rows: 38px 38px 47px; gap: 4px 8px; height: auto; padding: 6px 8px; }
     .preview-controls__search, .preview-controls__sort { grid-column: 1 / -1; width: 100%; }
-    .preview-controls__search { display: grid; grid-template-columns: minmax(0, 1fr) 80px 72px; gap: 5px; }
+    .preview-controls__search { grid-row: 1; display: grid; grid-template-columns: minmax(0, 1fr) 120px 72px; gap: 5px; }
     .preview-controls__search label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-    .preview-controls__search input, .preview-controls__search select { width: 100%; }
-    .preview-controls__sort { justify-content: space-between; }
-    .preview-controls__sort > span { font-size: 12px; }
-    .preview-controls button { padding: 5px 4px; font-size: 13px; }
-    .preview-controls__create { grid-column: 1; justify-self: start; }
-    .preview-controls__count { grid-column: 2; justify-self: end; font-size: 12px; }
+    .preview-controls__search input, .preview-controls__search select { width: 100%; height: 38px; }
+    .preview-controls__sort { grid-row: 2; justify-content: space-between; }
+    .preview-controls__sort > span { font-size: 13px; }
+    .preview-controls button { min-height: 38px; padding: 5px 6px; font-size: 14px; }
+    .preview-controls__note { grid-column: 1; grid-row: 3; }
+    .preview-controls .preview-controls__create { grid-column: 2; grid-row: 3; width: 105px; height: 47px; }
+    .preview-controls__count { grid-column: 3; grid-row: 3; font-size: 12px; }
     .board__frame { inset: 50px 0 0; }
     .board__frame::after { border-width: 16px; border-image-width: 16px; }
     .board__paper { inset: 16px; padding: 8px; }
@@ -185,6 +203,10 @@ button, input, select { font: inherit; }
     .notice-dialog dl > div { padding: 4px 0; }
     .notice-dialog__actions { margin-top: 9px; }
     .notice-dialog__action { width: 92px; height: 47px; }
+}
+
+@media (max-width: 360px) {
+    .preview-controls__search { grid-template-columns: minmax(0, 1fr) 100px 72px; }
 }
 
 @media (prefers-reduced-motion: reduce) { .notice-thumb { transition: none; } }
